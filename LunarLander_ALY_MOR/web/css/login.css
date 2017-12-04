@@ -1,0 +1,60 @@
+/*MODAL REGISTRO Y MODAL LOGUIN*/
+.center {
+    margin-top:50px;   
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+    	padding: 15px;
+	}
+    
+.modal-footer .btn-group button {
+	height:50px;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
+}
+	
+.modal-footer .btn-group:last-child > button {
+	border-right: 0;
+}
+/*
+Login Modal
+*/
+
+.modal-header, h4, .close {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-footer {
+      background-color: #f9f9f9;
+  }
+  .row{
+      margin-left: 200px;
+}
+
+/*MODAL AJUSTES*/
+.color-ajustes{
+    background-color:#0d036b;
+    text-align: center;
+    
+}
+/*FORMULARIO*/
+span{
+    color:#c9302c;
+    font-size: 1.5em;
+}
+
+input:invalid:required {
+  border: 1px solid red;
+}
+
+input:valid :required{
+  border: 1px solid green;
+}

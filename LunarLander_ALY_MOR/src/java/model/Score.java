@@ -147,5 +147,13 @@ public class Score implements Serializable {
     public String toString() {
         return "model.Score[ idPuntuacion=" + idPuntuacion + " ]";
     }
+
+    public void setIdUsuario(String v_id_usuario) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setIdConfiguracion(String v_id_configuracion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

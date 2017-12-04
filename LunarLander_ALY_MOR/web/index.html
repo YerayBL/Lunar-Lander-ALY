@@ -1,16 +1,452 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Lunar Lander</title>
         <meta charset="UTF-8">
+        <meta name="description" content="Minijuego Lunar Lander con html, css, y JavaScript">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="css/bootstrapValidator.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/login.css" rel="stylesheet" type="text/css"/>
+        <link rel='stylesheet' media='screen and (min-width: 601px)' href='css/responsive.css'>
+        <link rel='stylesheet' media='screen and (max-width: 600px)' href='css/smartphone.css'>
+        <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+        <script src="js/js.js" type="text/javascript"></script>
+        <script>
+            // funcion q nos dice si existe la cookie
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) === 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+            //funcion que nos dice la puntuacion al inicio de partida
+            function iniciarScore(v_id_puntuacion) {
+
+                var url = "PostInicioPartida";
+                var emess = "Error desconocido al logear";
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    data: {id_usuario: v_id_usuario},
+                    success: function (jsn) {
+
+                        alert("Puntuacion guardada con exito.");
+
+                    },
+                    error: function (e) {
+                        if (e["responseJSON"] === undefined) {
+                            alert(emess);
+                        } else {
+                            alert(e["responseJSON"]["error"]);
+                        }
+                    }
+                });
+                return v_id_puntuacion;
+            }
+
+            $(document).ready(function () {
+                $("#login").click(function () {
+                    // guardamos el usuario q se ha logeado
+                    //v_id_usuario = $("#id_usuario").val();
+                    var url = "GetConnection";
+                    var emess = "Error desconocido al logear";
+                    var v_aux_usuario = $("#id_usuario").val();
+                    $.ajax({
+                        url: url,
+                        dataType: 'json',
+                        data: {id_usuario: v_aux_usuario, password: $("#password").val()},
+                        success: function (jsn) {
+                            var v_id;
+                            v_json = jsn;
+                            //si no encuentra configuraciones nos aseguramos de que se cargue.
+                            if (v_aux_usuario !== "") {
+                                v_id_usuario = v_aux_usuario;
+                            }
+                            //si encuentra configuraciones carga la del id usuario.
+                            for (var i in jsn.configuracion) {
+                                v_id_usuario = jsn.configuracion[i].idUsuario;
+                                v_id = jsn.configuracion[i].idConfiguracion;
+
+                                $('#configuraciones').append("<option value=" + v_id + ">" + v_id + "</option>");
+                            }
+                            alert("¡¡¡Ya estas en el juego " + v_id_usuario + "!!!...elige configuración.");
+                            start();
+                        },
+                        error: function (e) {
+                            if (e["responseJSON"] === undefined) {
+                                alert(emess);
+                            } else {
+                                alert(e["responseJSON"]["error"]);
+                            }
+                            // recargamos la página        
+                            location.reload();
+                        }
+                    });
+
+                });
+                $("#enviarUser").click(function () { //onclick event
+                    var url = "PostUsuario";
+                    var emess = "Error desconocido al registrar";
+                    if ($("#id_usuario_reg").val() != "" && $("#nombre_reg").val() != "" && $("#apellido_reg").val() != "" && $("#password_reg").val() != "") {
+                        $.ajax({
+                            method: "POST",
+                            url: url,
+                            dataType: 'json',
+                            data: {id_usuario: $("#id_usuario_reg").val(), nombre: $("#nombre_reg").val(), apellido: $("#apellido_reg").val(), password: $("#password_reg").val()},
+                            success: function (json) {
+                                alert(json.mess);
+                            },
+                            error: function (e) {
+                                if (e["responseJSON"] === undefined) {
+                                    alert(emess);
+                                } else {
+                                    alert(e["responseJSON"]["error"]);
+                                }
+                            }
+                        });
+                    } else {
+                        alert("Completa datos del registro.");
+                    }
+                });
+                $("#guardar").click(function () { //onclick event
+                    var url = "PostConfiguraciones";
+                    var emess = "Error desconocido";
+                    var p_id = $("#id").val();
+                    // la variable id del js coge el valor del input que hemos puesto en p_id
+                    id = p_id;
+                    $.ajax({
+                        method: "POST",
+                        url: url,
+                        dataType: 'json',
+                        data: {id_configuracion: $("#id").val(), id_usuario: v_id_usuario, dificultad: dificultad, luna: modeloLuna, nave: modeloNave},
+                        success: function (p_json) {
+                            v_json = p_json;
+                            alert("La configuración se ha añadido con exito.");
+                            $('#configuraciones').append("<option value=" + p_id + ">" + p_id + "</option>");
+                        },
+                        error: function (e) {
+                            if (e["responseJSON"] === undefined) {
+                                alert(emess);
+                            } else {
+                                alert(e["responseJSON"]["error"]);
+                            }
+                        }
+                    });
+                });
+                $("#cargar").click(function () {
+                    v_seleccionado = $('#configuraciones').val();
+                    // recorremos las configuraciones y recuperamos la que coincida con el id seleccionado
+                    var v_id_configuracion;
+                    for (var i in v_json.configuracion) {
+                        v_id_configuracion = v_json.configuracion[i].idConfiguracion;
+
+                        //variable v_id_configuracion que ees la del identificador pongo v_ para no confundir con el id de javaScript.
+
+                        if (v_id_configuracion === v_seleccionado) {
+                            dificultad = parseInt(v_json.configuracion[i].dificultad);
+                            recarga_dificultad();
+                            modeloNave = parseInt(v_json.configuracion[i].nave);
+                            recarga_nave();
+                            modeloLuna = parseInt(v_json.configuracion[i].luna);
+                            recarga_luna();
+                        }
+                    }
+                });
+                $("#borrar").click(function () {
+                    var url = "PostBorrar";
+                    var emess = "Error desconocido";
+                    $.ajax({
+                        method: "POST",
+                        url: url,
+                        dataType: "json",
+                        data: {id_configuracion: $('#configuraciones').val(), id_usuario: v_id_usuario},
+                        success: function (p_json) {
+                            v_json = p_json;
+                            alert("Elemento eliminado.");
+                            var valor = $('#configuraciones').val();
+                            $("#configuraciones option[value=" + valor + "]").remove();
+                        },
+                        error: function (e) {
+                            if (e["responseJSON"] === undefined)
+                                alert(emess);
+                            else
+                                alert(e["responseJSON"]["error"]);
+                        }
+                    });
+                });
+                // esto se ejecuta si o si al recargar la página
+                var v_existe_cookie = getCookie("cookie_usuario");
+                if (v_existe_cookie !== "") {
+                    $("#login").click();// si hay cookie hacemos el get para validar usuari0
+                    v_id_usuario = v_existe_cookie;
+                } else {
+                    $("#myLogin").modal();
+                }
+            });
+        </script>
     </head>
-    <body>
-        <div>hola como va</div>
+    <body id="contenedor">
+        <div id="nave">
+            <img id ="imgNave" src="img/nave.png" alt="img nave">
+            <img id ="imgMotor" src="img/motor.gif" alt="img motor">
+        </div>
+
+        <div id="izquierda">
+            <div id="cpanel">
+                <div class="controlesNave">Velocidad:<br><b><span id="velocidad">100</span></b> m/s</div>
+                <div class="controlesNave">Fuel:<br><b><span id="fuel">100</span></b> %</div>
+                <div class="controlesNave">Altura:<br><b><span id="altura">60</span></b> m</div>
+                <div id="botonOn"></div>
+            </div>
+        </div>
+
+        <div id="zonaAterrizaje"><img src="img/luna.png" alt="luna" id="luna"></div>
+
+        <div id="derechaSmartphone">
+            <div id="reanudaSmartphone"><p>Play</p></div>
+            <div id="pausaSmartphone">Menú</div>
+            <div id="reiniciaSmartphone"><p>Reiniciar</p></div>
+            <div id="ayudaSmartphone"><p>Ayuda</p></div>
+            <div id="botonAjustesSmartphone"><p>Ajustes</p></div>
+        </div>
+
+        <div id="derecha">
+            <div id="reanudar"><p>Play</p></div>
+            <div id="pausa">Pausar</div>
+            <div id="reinicia"><p>Reiniciar</p></div>
+            <div id="instrucciones"><p>Ayuda</p></div>
+            <div id="botonAjustes"><p>Ajustes</p></div>
+        </div>
+
+        <div id="gameOver">
+            <h2>¡¡¡GAME OVER!!!</h2>
+            ¡Inténtalo de nuevo! <br>
+            La velocidad de la nave no debe superar los 5 metros/segundo<br><br>
+            <button id="jugarOtraVez"><h3>Probar otra vez</h3></button>
+            <button id="jugarOtraVezSmartphone"><h3>Probar otra vez</h3></button>
+            <br><br>
+            Intentos realizados: <b><span id="intentos">0</span></b><br><br>
+        </div>
+
+        <div id="userWin">
+            <h2>¡¡¡ENHORABUENA!!!</h2>
+            La NASA estaría orgullosa de contar con pilotos como tú...<br><br>
+            <img src="img/Enhorabuena.gif"><br>
+            <button id="jugarAgain"><h3>Jugar otra vez</h3></button>
+            <button id="jugarAgainSmartphone"><h3>Jugar otra vez</h3></button><br><br>
+        </div>
+
+        <div id="menuInstrucciones">
+            <a href="#" onclick="ocultarInstrucciones();"><img id="close" src="img/close.png" alt="close"></a>
+            <h3 class="text-center">INSTRUCCIONES</h3>
+            <br>
+            <br>
+            <p class="text-justify">El juego consiste en frenar la caída de la nave mediante 
+                el uso del motor, utiliza la tecla <b>espacio</b> o el botón <b>ON</b>
+                para la version smartphone, para que esta pueda aterrizar adecuadamente
+                sobre la superficie lunar.<br><br>Si el jugador no frena lo suficientemente
+                la caída de la nave ,a una <b>velocidad inferior a los 5 m/s</b>, esta se 
+                estrellará y el jugador no superará el juego.<br><br> Además hay que tener
+                en cuenta que la nave cuenta con un medidor de gasolina que se acabará si 
+                el jugador abusa del uso del motor de la nave.</p>
+        </div>
+        <!--MODAL AJUSTES-->
+        <div class="container">
+        <!-- Modal -->
+            <div class="modal fade" id="ajustes" role="dialog">
+                <div class="modal-dialog  modal-sm">
+                 <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4>Ajustes</h4>
+                        </div>
+                        <div class="modal-body color-ajustes">
+                            <button type="button" class="btn btn-primary btn-block" class="close" data-dismiss="modal" id="botonConfiguracion">Configuración</button>
+                            <br><br>
+                            <button type="button" class="btn btn-primary btn-block" class="close" data-dismiss="modal" id="botonlistaPartidas">Listado de Partidas</button>
+                            <br><br>
+                            <button type="button" class="btn btn-primary btn-block" class="close" data-dismiss="modal" id="botonlistaUsuarios">Listado Jugadores on-line</button>
+                            <br><br>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--CONFIGURACION--> 
+        <div class="container" id="settings">
+            <a href="#" onclick="ocultarConfiguracion()"><img id="close" src="img/close.png" alt="close"></a>
+            <div class="row">
+                <div class="col-xs-8">
+                <h3>CONFIGURACIÓN</h3>    
+                    <form>
+                        <div class="form-group input-group-lg">
+                             <label >Bienvenido :
+                                <input id="v_id_usuario" class="form-control" type="text">
+                            </label>
+                            <br>
+                            <label>Dificultad del juego:<br>
+                                (Disminuye el depósito de gasolina):
+                            </label>
+                            <select class="form-control"  id="dificultad">
+                                <option value="1" selected="selected">Fácil</option>
+                                <option value="2">Media</option>
+                                <option value="3">Difícil</option>
+                            </select>
+                            <label>Modelo Luna:</label>
+                            <select class="form-control input-sm" id="modeloLuna" >
+                                <option selected="selected" value="1">Amarilla</option>
+                                <option value="2">Gris</option>
+                            </select>
+
+                            <label>Modelo Nave:</label>
+                            <select class="form-control"  id="modeloNave">
+                                <option selected="selected" value="1">Modelo Estándar</option>
+                                <option value="2">Modelo PodRacer</option>
+                            </select>
+
+                            <label>Nombre de la Configuracion:</label>
+                            <br>
+                            <input id="id" class="form-control" type="text">
+                            <br>
+                            <input id="guardar" class="btn-primary" type="button" value="Guardar Configuraciones">
+                            <br>
+                            <br>
+                            <select class="form-control"  id="configuraciones"></select>
+                            <br>
+                            <input class="btn-primary" id="cargar" type="button" value="Cargar Configuraciones">
+                            <input class="btn-primary" id="borrar" type="button" value="Borrar Configuración">
+                            <br>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+        </div><!--FIN CONFIGURACION>
+        <!--LISTA DE PARTIDAS-->
+         <div class="container" id="settingsLista">
+            <a href="#" onclick="ocultarListado()"><img id="close" src="img/close.png" alt="close"></a>
+            <div class="row">
+                <div class="col-xs-8">
+                    <h3>lISTADO DE PARTIDAS</h3> 
+                    <br>
+                    <ul class="list-inline">
+                        <li class="list-group-item list-group-item-info active">Partida</li>
+                        <li class="list-group-item list-group-item-info">Configuraciòn</li>
+                        <li class="list-group-item list-group-item-info">Puntuación</li>
+                        <li class="list-group-item list-group-item-info">Duración</li>
+                    </ul>
+                </div>
+            </div>
+         </div><!--FIN LISTADO DE PARTIDAS-->
+          <!--LISTA DE USUARIOS ON-LINE-->
+         <div class="container" id="settingsUsuarios">
+            <a href="#" onclick="ocultarListadoUsuarios()"><img id="close" src="img/close.png" alt="close"></a>
+            <div class="row">
+                <div class="col-xs-8">
+                    <h3>lISTADO DE USUARIS ON-LINE</h3> 
+                    <br>
+                    <ul class="list-inline">
+                        <li class="list-group-item list-group-item-info">Usuarios on-line</li>
+                    </ul>
+                </div>
+            </div>
+         </div><!--FIN LISTADO DE USURIOS ON-LINE-->
+                    
+        <!--LOGIN MODAL-->
+        <!-- line modal -->
+        <div class="modal fade" id="myLogin" tabindex="-1" role="dialog" aria-labelledby="modalLabel" 
+             aria-hidden="true" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>-->
+                        <h3 class="modal-title" id="lineModalLabel">¡¡Si quieres ver las estrellas...registrate!!</h3>
+                    </div>
+                    <div class="modal-body">
+                        <!-- content goes here -->
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Nombre de Usuario :</label>
+                                <input type="text" class="form-control" id="id_usuario" placeholder="Introduzca usuario" name="id_usuario" required autofocus >
+                            </div> 
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" class="form-control"  id="password" placeholder="Introduzca password" name="password" required >
+                            </div>
+                            <div class="form-group">    
+                                <button class="btn btn-lg btn-primary btn-block" name="login" id="login" type="button" class="close" data-dismiss="modal">Login</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a data-toggle="modal" href="#myModalRegistro" class="text-center new-account">Registrarse</a>
+                    </div>
+                </div>
+            </div>
+        </div><!--CIERRE DEL CONTAINER MODAL LOGIN-->
+        <!--MODAL REGITRO-->
+        <div class="container">
+            <!-- Modal -->
+            <div class="modal fade" id="myModalRegistro" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Formulario de Registro</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label for="id_usuario"> Id Usuario<span>*</span></label>
+                                        <input type="text" class="form-control" id="id_usuario_reg" name="id_usuario" required autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nombre"> Nombre<span>*</span></label>
+                                        <input type="text" class="form-control" id="nombre_reg" name="nombre" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="apellido">Apellido<span>*</span></label>
+                                        <input type="text" class="form-control" id="apellido_reg" name="apellido" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password<span>*</span></label>
+                                        <input type="password" class="form-control" id="password_reg" name="password" required>
+                                    </div>
+                                    <input type="button" class="btn btn-danger" class="close" data-dismiss="modal" id="enviarUser" name="enviarUser" value="Enviar"  />
+                                    <input type="button"  class=" btn btn-default" value="Restablecer" />
+                                </fieldset>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <p class="text-right"> <span>*</span> Campos Obligatorios</p>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div><!--CIERRE CONTAINER MODAL REGISTRO-->
+        <script src="js/jquery-2.2.3.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/bootstrapValidator.min.js" type="text/javascript"></script>
     </body>
 </html>
+
