@@ -5,11 +5,11 @@
  */
 package servlet;
 
-import Utilidades.Utilidades;
-import controllers.ScoreJpaController;
-import gson.Scores;
+import controllers.PuntuacionJpaController;
+import gson.Puntuaciones;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,8 +20,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Score;
-
+import model.Puntuacion;
+import pck_utilidades.Utilidades;
 /**
  *
  * @author tuno
@@ -42,49 +42,52 @@ public class PostInicioPartida extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("LunarLander_ALY_MORPU");
         EntityManager entitymanager = emf.createEntityManager();
         try {
-            int v_id_puntuacion;
-
             String v_id_usuario = request.getParameter("id_usuario");
-            String v_id_configuracion = request.getParameter("id_configuracion");
-            v_id_puntuacion = Integer.parseInt("id_puntuacion");//parseo a String
-            String id_puntuacion = request.getParameter("id_puntuacion");
+            //calculamos el proximo id            
+            Query query = entitymanager.createQuery("Select MAX(p.idPuntuacion) from Puntuacion p");
+            List<Integer> list_res_puntuacion = query.getResultList();
+            int v_id_puntuacion = 0;
+            for (Integer resultado : list_res_puntuacion) {
+                if (resultado!=null){
+                  v_id_puntuacion = resultado;
+                }  
+            }
+            //int v_id_puntuacion = (int) query.getSingleResult();           
+            v_id_puntuacion = v_id_puntuacion + 1;// avanzamos con el id de puntuacion--> cogemos la máxima y le sumamos 1
 
-            //Creo una nueva puntuación. L //GUARDAR SCORE CON CONTROLLER     
-            Score score = new Score(null); //id null, autoincrement
-            score.setIdUsuario(v_id_usuario);
-            score.setIdConfiguracion(v_id_configuracion);
-            score.setIdPuntuacion(v_id_puntuacion);
-
+            //Creo una nueva puntuación.   
+            Puntuacion obj_puntuacion = new Puntuacion(v_id_puntuacion);
+            obj_puntuacion.setIdUsuario(v_id_usuario);
+            Date v_date=new Date();
+            obj_puntuacion.setInitTime(v_date);
+            
             //GUARDAR PUNTUACION CON CONTROLLER        
-            ScoreJpaController sjc = new ScoreJpaController(emf);
-            sjc.create(score);
-
-            response.setContentType("application/json");
-            PrintWriter pw = response.getWriter();
-            pw.println("{\"mess\":\"La puntuacion ha sido guardada correctamente.\"}");
-
-            //Objeto de la clase Scores. Tiene todas las puntuaciones
-            Scores obj_score = new Scores();
-
-            //recupero los datos  una vez insertado los datos
-            Query query = entitymanager.createNamedQuery("Score.findByIdPuntuacion");
+            PuntuacionJpaController pjc = new PuntuacionJpaController(emf);
+            pjc.create(obj_puntuacion);
+            
+            //Objeto de la clase puntuaciones. Tiene todas las puntuaciones
+            Puntuaciones obj_puntuaciones = new Puntuaciones();
+            
+            //recuperar los datos de las puntuaciones
+            query = entitymanager.createNamedQuery("Puntuacion.findByIdPuntuacion");
             query.setParameter("idPuntuacion", v_id_puntuacion);
-            List<Score> list = query.getResultList();
-            obj_score.setScore(list);
+            List<Puntuacion> list = query.getResultList();
+            obj_puntuaciones.setConfiguracion(list);
+
             // devolvemos el resultado por un String de json
             String jsonInString;
             Utilidades operaciones = new Utilidades();
-            jsonInString = operaciones.objectToJson_String(obj_score);
+            jsonInString = operaciones.PuntuacionToJson_String(obj_puntuaciones);
             response.setContentType("application/json");
+            PrintWriter pw = response.getWriter();
             pw.println(jsonInString);
 
         } catch (Exception e) {
+            e.getMessage();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");
             PrintWriter pw = response.getWriter();
             pw.println("{\"error\":\"Error al guardar la puntuacion.\"}");
         }
-
     }
-
 }

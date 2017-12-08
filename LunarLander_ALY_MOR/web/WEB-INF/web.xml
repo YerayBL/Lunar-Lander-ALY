@@ -4,6 +4,14 @@
         <description>ServletContextListener</description>
         <listener-class>listeners.PostgresSQL_Listener</listener-class>
     </listener>
+    <servlet>
+        <servlet-name>PostFinPartida</servlet-name>
+        <servlet-class>servlet.PostFinPartida</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostFinPartida</servlet-name>
+        <url-pattern>/PostFinPartida</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

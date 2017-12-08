@@ -31,16 +31,18 @@
                 return "";
             }
             //funcion que nos dice la puntuacion al inicio de partida
-            function iniciarScore(v_id_puntuacion) {
-
+            function iniciarPuntuacion() {
                 var url = "PostInicioPartida";
                 var emess = "Error desconocido al logear";
                 $.ajax({
                     url: url,
+                    method: "POST",
                     dataType: 'json',
                     data: {id_usuario: v_id_usuario},
                     success: function (jsn) {
-
+                        for (var i in jsn.puntuacion) {
+                            v_id_puntuacion = jsn.puntuacion[i].idPuntuacion;
+                        }
                         alert("Puntuacion guardada con exito.");
 
                     },
@@ -52,9 +54,33 @@
                         }
                     }
                 });
-                return v_id_puntuacion;
             }
 
+            //funcion que nos dice la puntuacion al inicio de partida
+            function finPuntuacion() {
+                var url = "PostFinPartida";
+                var emess = "Error desconocido al logear";
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    dataType: 'json',
+                    data: {id_puntuacion: v_id_puntuacion,id_configuracion:id_configuracion, velocidad: v, fuel: gasolina},
+                    success: function (jsn) {
+                        for (var i in jsn.puntuacion) {
+                            v_id_puntuacion = jsn.puntuacion[i].idPuntuacion;
+                        }
+                        alert("Puntuacion guardada con exito.");
+
+                    },
+                    error: function (e) {
+                        if (e["responseJSON"] === undefined) {
+                            alert(emess);
+                        } else {
+                            alert(e["responseJSON"]["error"]);
+                        }
+                    }
+                });
+            }
             $(document).ready(function () {
                 $("#login").click(function () {
                     // guardamos el usuario q se ha logeado
@@ -81,6 +107,7 @@
                                 $('#configuraciones').append("<option value=" + v_id + ">" + v_id + "</option>");
                             }
                             alert("¡¡¡Ya estas en el juego " + v_id_usuario + "!!!...elige configuración.");
+                            iniciarPuntuacion();/*Llamo al iniciar score para guardar puntuacion en bbdd*/
                             start();
                         },
                         error: function (e) {
@@ -160,6 +187,7 @@
                             recarga_nave();
                             modeloLuna = parseInt(v_json.configuracion[i].luna);
                             recarga_luna();
+                            id_configuracion=v_seleccionado;
                         }
                     }
                 });
@@ -263,10 +291,10 @@
         </div>
         <!--MODAL AJUSTES-->
         <div class="container">
-        <!-- Modal -->
+            <!-- Modal -->
             <div class="modal fade" id="ajustes" role="dialog">
                 <div class="modal-dialog  modal-sm">
-                 <!-- Modal content-->
+                    <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -292,10 +320,10 @@
             <a href="#" onclick="ocultarConfiguracion()"><img id="close" src="img/close.png" alt="close"></a>
             <div class="row">
                 <div class="col-xs-8">
-                <h3>CONFIGURACIÓN</h3>    
+                    <h3>CONFIGURACIÓN</h3>    
                     <form>
                         <div class="form-group input-group-lg">
-                             <label >Bienvenido :
+                            <label >Bienvenido :
                                 <input id="v_id_usuario" class="form-control" type="text">
                             </label>
                             <br>
@@ -337,7 +365,7 @@
             </div>
         </div><!--FIN CONFIGURACION>
         <!--LISTA DE PARTIDAS-->
-         <div class="container" id="settingsLista">
+        <div class="container" id="settingsLista">
             <a href="#" onclick="ocultarListado()"><img id="close" src="img/close.png" alt="close"></a>
             <div class="row">
                 <div class="col-xs-8">
@@ -351,9 +379,9 @@
                     </ul>
                 </div>
             </div>
-         </div><!--FIN LISTADO DE PARTIDAS-->
-          <!--LISTA DE USUARIOS ON-LINE-->
-         <div class="container" id="settingsUsuarios">
+        </div><!--FIN LISTADO DE PARTIDAS-->
+        <!--LISTA DE USUARIOS ON-LINE-->
+        <div class="container" id="settingsUsuarios">
             <a href="#" onclick="ocultarListadoUsuarios()"><img id="close" src="img/close.png" alt="close"></a>
             <div class="row">
                 <div class="col-xs-8">
@@ -364,8 +392,8 @@
                     </ul>
                 </div>
             </div>
-         </div><!--FIN LISTADO DE USURIOS ON-LINE-->
-                    
+        </div><!--FIN LISTADO DE USURIOS ON-LINE-->
+
         <!--LOGIN MODAL-->
         <!-- line modal -->
         <div class="modal fade" id="myLogin" tabindex="-1" role="dialog" aria-labelledby="modalLabel" 

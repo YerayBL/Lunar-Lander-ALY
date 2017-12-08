@@ -6,12 +6,12 @@ var dt = 0.016683;
 var timer;
 var gasolina = 100;
 var dificultad = 1;
-var gasolinaTotal = 100
+var gasolinaTotal = 100;
 var intentos = 1;
 var modeloNave = 1;
 var modeloLuna = 1;
 var timerFuel = null;
-var id_configuracion = "dificil";
+var id_configuracion="sin_seleccionar";
 var v_id_usuario;
 var v_id_puntuacion;
 var v_json;
@@ -230,6 +230,7 @@ function finalizarJuego() {
         document.getElementById("userWin").style.display = "block";
         eventosOff();
     }
+    finPuntuacion();//SE PONE ESTA FUNCION AL TERMINAR EL JUEGO
 }
 
 //FUNCION QUE ACTUA EN CUANTO SE ENCIENDE EL MOTOR

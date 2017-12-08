@@ -5,21 +5,15 @@
  */
 package servlet;
 
-import Utilidades.Utilidades;
-import gson.Configuraciones;
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -28,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Configuracion;
 import model.Usuario;
+import gson.Configuraciones;
+import pck_utilidades.Utilidades;
 
 /**
  *
@@ -37,36 +33,6 @@ import model.Usuario;
 public class GetConnection extends HttpServlet {
 
     String v_id_usuario = "";
-    Logger logger = Logger.getLogger("MyLog");
-
-    @Override
-    public void init(ServletConfig config) {
-        try {
-            super.init(config);
-            try {
-                ServletContext context = getServletContext();
-                String fullPath = context.getRealPath("/MyLogFile.log");
-                FileHandler fh = new FileHandler(fullPath, true);
-                logger.setUseParentHandlers(true);
-                logger.addHandler(fh);
-
-                SimpleFormatter formatter = new SimpleFormatter();
-
-                //Establecer el formato del fichero. Fichero de texto simple (SimpleFormatter).
-                fh.setFormatter(formatter);
-
-                //registrar todos los eventos utilizaremos.
-                logger.setLevel(Level.ALL);
-
-                logger.log(Level.INFO, "Iniciamos log");
-            } catch (SecurityException | IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (ServletException ex) {
-            logger.getLogger(GetConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -85,7 +51,7 @@ public class GetConnection extends HttpServlet {
                     v_id_usuario = cookie.getValue();
                 }
             }
-            logger.log(Level.INFO, "Usuario logeado por cookie " + v_id_usuario);
+
         } else {
             // no hemos recibido cookies, cogemos los parametros y validamos
             //Pedir parametros
@@ -105,7 +71,7 @@ public class GetConnection extends HttpServlet {
                     userCookie.setMaxAge(60 * 60 * 24 * 365); //Store cookie for 1 year
                     userCookie.setPath("/");
                     response.addCookie(userCookie);
-                    logger.log(Level.INFO, "Usuario logeado por ventana modal " + v_id_usuario);
+
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -126,8 +92,7 @@ public class GetConnection extends HttpServlet {
                 query.setParameter("idUsuario", v_id_usuario);
                 List<Configuracion> list = query.getResultList();
                 //creo objeto cofiguraciones para introducir los datos de la bbdd
-                Configuraciones obj_configuraciones = new Configuraciones();
-                obj_configuraciones.setConfiguracion(list);
+                Configuraciones obj_configuraciones = new Configuraciones(list);
                 /*for (Configuracion confi : list) {
                 obj_configuraciones.getConfiguracion().add(confi);
                 }*/
@@ -146,11 +111,6 @@ public class GetConnection extends HttpServlet {
                 response.setContentType("application/json");
                 PrintWriter pw = response.getWriter();
                 pw.println("{\"error\":\"Ha sido imposible guardar los datos\"}");
-            } finally {
-                if (entitymanager.getTransaction().isActive()) {
-                    entitymanager.close();
-                }
-                emf.close();
             }
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -159,7 +119,6 @@ public class GetConnection extends HttpServlet {
             pw.println("{\"error\":\"Usuario o Password incorrectos\"}");
         }
     }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

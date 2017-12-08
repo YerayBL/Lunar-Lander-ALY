@@ -5,19 +5,16 @@
  */
 package controllers;
 
-import controllers.exceptions.IllegalOrphanException;
 import controllers.exceptions.NonexistentEntityException;
 import controllers.exceptions.PreexistingEntityException;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import model.Score;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import model.Configuracion;
 
 /**
@@ -36,29 +33,11 @@ public class ConfiguracionJpaController implements Serializable {
     }
 
     public void create(Configuracion configuracion) throws PreexistingEntityException, Exception {
-        if (configuracion.getScoreList() == null) {
-            configuracion.setScoreList(new ArrayList<Score>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Score> attachedScoreList = new ArrayList<Score>();
-            for (Score scoreListScoreToAttach : configuracion.getScoreList()) {
-                scoreListScoreToAttach = em.getReference(scoreListScoreToAttach.getClass(), scoreListScoreToAttach.getIdPuntuacion());
-                attachedScoreList.add(scoreListScoreToAttach);
-            }
-            configuracion.setScoreList(attachedScoreList);
             em.persist(configuracion);
-            for (Score scoreListScore : configuracion.getScoreList()) {
-                Configuracion oldIdConfiguracionOfScoreListScore = scoreListScore.getIdConfiguracion();
-                scoreListScore.setIdConfiguracion(configuracion);
-                scoreListScore = em.merge(scoreListScore);
-                if (oldIdConfiguracionOfScoreListScore != null) {
-                    oldIdConfiguracionOfScoreListScore.getScoreList().remove(scoreListScore);
-                    oldIdConfiguracionOfScoreListScore = em.merge(oldIdConfiguracionOfScoreListScore);
-                }
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findConfiguracion(configuracion.getIdConfiguracion()) != null) {
@@ -72,45 +51,12 @@ public class ConfiguracionJpaController implements Serializable {
         }
     }
 
-    public void edit(Configuracion configuracion) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Configuracion configuracion) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Configuracion persistentConfiguracion = em.find(Configuracion.class, configuracion.getIdConfiguracion());
-            List<Score> scoreListOld = persistentConfiguracion.getScoreList();
-            List<Score> scoreListNew = configuracion.getScoreList();
-            List<String> illegalOrphanMessages = null;
-            for (Score scoreListOldScore : scoreListOld) {
-                if (!scoreListNew.contains(scoreListOldScore)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Score " + scoreListOldScore + " since its idConfiguracion field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            List<Score> attachedScoreListNew = new ArrayList<Score>();
-            for (Score scoreListNewScoreToAttach : scoreListNew) {
-                scoreListNewScoreToAttach = em.getReference(scoreListNewScoreToAttach.getClass(), scoreListNewScoreToAttach.getIdPuntuacion());
-                attachedScoreListNew.add(scoreListNewScoreToAttach);
-            }
-            scoreListNew = attachedScoreListNew;
-            configuracion.setScoreList(scoreListNew);
             configuracion = em.merge(configuracion);
-            for (Score scoreListNewScore : scoreListNew) {
-                if (!scoreListOld.contains(scoreListNewScore)) {
-                    Configuracion oldIdConfiguracionOfScoreListNewScore = scoreListNewScore.getIdConfiguracion();
-                    scoreListNewScore.setIdConfiguracion(configuracion);
-                    scoreListNewScore = em.merge(scoreListNewScore);
-                    if (oldIdConfiguracionOfScoreListNewScore != null && !oldIdConfiguracionOfScoreListNewScore.equals(configuracion)) {
-                        oldIdConfiguracionOfScoreListNewScore.getScoreList().remove(scoreListNewScore);
-                        oldIdConfiguracionOfScoreListNewScore = em.merge(oldIdConfiguracionOfScoreListNewScore);
-                    }
-                }
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -128,7 +74,7 @@ public class ConfiguracionJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -139,17 +85,6 @@ public class ConfiguracionJpaController implements Serializable {
                 configuracion.getIdConfiguracion();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The configuracion with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            List<Score> scoreListOrphanCheck = configuracion.getScoreList();
-            for (Score scoreListOrphanCheckScore : scoreListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Configuracion (" + configuracion + ") cannot be destroyed since the Score " + scoreListOrphanCheckScore + " in its scoreList field has a non-nullable idConfiguracion field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(configuracion);
             em.getTransaction().commit();

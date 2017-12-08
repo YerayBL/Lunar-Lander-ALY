@@ -170,6 +170,22 @@
 	width: 100%;
 	height: 100%;
 }
+#settingsUsuarios{
+	display: none;
+	background-image: url("../img/fondo_instrucciones.jpg");
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+#settingsLista{
+	display: none;
+	background-image: url("../img/fondo_instrucciones.jpg");
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
 #dificultad {
 	padding: 10px;
 	font-size: 120%;

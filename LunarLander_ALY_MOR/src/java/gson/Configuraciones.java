@@ -5,22 +5,30 @@
  */
 package gson;
 
-/**
- *
- * @author tuno
- */
+import java.io.Serializable;
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import model.Configuracion;
 
-public class Configuraciones {
+public class Configuraciones implements Serializable {
 
-    public List<Configuracion> configuracion = null;
+    @SerializedName("configuracion")
+    @Expose
+    private List<Configuracion> configuracion = null;
+    private final static long serialVersionUID = 4418342885309929295L;
 
-    
+    /**
+     * No args constructor for use in serialization
+     *
+     */
     public Configuraciones() {
     }
 
-   
+    /**
+     *
+     * @param configuracion
+     */
     public Configuraciones(List<Configuracion> configuracion) {
         super();
         this.configuracion = configuracion;

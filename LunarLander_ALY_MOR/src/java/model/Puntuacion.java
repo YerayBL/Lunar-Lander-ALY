@@ -12,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -26,22 +24,29 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author tuno
  */
 @Entity
-@Table(name = "score")
+@Table(name = "puntuacion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Score.findAll", query = "SELECT s FROM Score s")
-    , @NamedQuery(name = "Score.findByIdPuntuacion", query = "SELECT s FROM Score s WHERE s.idPuntuacion = :idPuntuacion")
-    , @NamedQuery(name = "Score.findByVelocidad", query = "SELECT s FROM Score s WHERE s.velocidad = :velocidad")
-    , @NamedQuery(name = "Score.findByFuel", query = "SELECT s FROM Score s WHERE s.fuel = :fuel")
-    , @NamedQuery(name = "Score.findByInitTime", query = "SELECT s FROM Score s WHERE s.initTime = :initTime")
-    , @NamedQuery(name = "Score.findByEndTime", query = "SELECT s FROM Score s WHERE s.endTime = :endTime")})
-public class Score implements Serializable {
+    @NamedQuery(name = "Puntuacion.findAll", query = "SELECT p FROM Puntuacion p")
+    , @NamedQuery(name = "Puntuacion.findByIdUsuario", query = "SELECT p FROM Puntuacion p WHERE p.idUsuario = :idUsuario")
+    , @NamedQuery(name = "Puntuacion.findByIdPuntuacion", query = "SELECT p FROM Puntuacion p WHERE p.idPuntuacion = :idPuntuacion")
+    , @NamedQuery(name = "Puntuacion.findByIdConfiguracion", query = "SELECT p FROM Puntuacion p WHERE p.idConfiguracion = :idConfiguracion")
+    , @NamedQuery(name = "Puntuacion.findByVelocidad", query = "SELECT p FROM Puntuacion p WHERE p.velocidad = :velocidad")
+    , @NamedQuery(name = "Puntuacion.findByFuel", query = "SELECT p FROM Puntuacion p WHERE p.fuel = :fuel")
+    , @NamedQuery(name = "Puntuacion.findByInitTime", query = "SELECT p FROM Puntuacion p WHERE p.initTime = :initTime")
+    , @NamedQuery(name = "Puntuacion.findByEndTime", query = "SELECT p FROM Puntuacion p WHERE p.endTime = :endTime")})
+public class Puntuacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "id_usuario")
+    private String idUsuario;
     @Id
     @Basic(optional = false)
     @Column(name = "id_puntuacion")
     private Integer idPuntuacion;
+    @Column(name = "id_configuracion")
+    private String idConfiguracion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "velocidad")
     private BigDecimal velocidad;
@@ -53,18 +58,25 @@ public class Score implements Serializable {
     @Column(name = "end_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
-    @JoinColumn(name = "id_configuracion", referencedColumnName = "id_configuracion")
-    @ManyToOne(optional = false)
-    private Configuracion idConfiguracion;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-    @ManyToOne(optional = false)
-    private Usuario idUsuario;
 
-    public Score() {
+    public Puntuacion() {
     }
 
-    public Score(Integer idPuntuacion) {
+    public Puntuacion(Integer idPuntuacion) {
         this.idPuntuacion = idPuntuacion;
+    }
+
+    public Puntuacion(Integer idPuntuacion, String idUsuario) {
+        this.idPuntuacion = idPuntuacion;
+        this.idUsuario = idUsuario;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Integer getIdPuntuacion() {
@@ -73,6 +85,14 @@ public class Score implements Serializable {
 
     public void setIdPuntuacion(Integer idPuntuacion) {
         this.idPuntuacion = idPuntuacion;
+    }
+
+    public String getIdConfiguracion() {
+        return idConfiguracion;
+    }
+
+    public void setIdConfiguracion(String idConfiguracion) {
+        this.idConfiguracion = idConfiguracion;
     }
 
     public BigDecimal getVelocidad() {
@@ -107,22 +127,6 @@ public class Score implements Serializable {
         this.endTime = endTime;
     }
 
-    public Configuracion getIdConfiguracion() {
-        return idConfiguracion;
-    }
-
-    public void setIdConfiguracion(Configuracion idConfiguracion) {
-        this.idConfiguracion = idConfiguracion;
-    }
-
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -133,10 +137,10 @@ public class Score implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Score)) {
+        if (!(object instanceof Puntuacion)) {
             return false;
         }
-        Score other = (Score) object;
+        Puntuacion other = (Puntuacion) object;
         if ((this.idPuntuacion == null && other.idPuntuacion != null) || (this.idPuntuacion != null && !this.idPuntuacion.equals(other.idPuntuacion))) {
             return false;
         }
@@ -145,15 +149,7 @@ public class Score implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Score[ idPuntuacion=" + idPuntuacion + " ]";
-    }
-
-    public void setIdUsuario(String v_id_usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setIdConfiguracion(String v_id_configuracion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "model.Puntuacion[ idPuntuacion=" + idPuntuacion + " ]";
     }
     
 }
