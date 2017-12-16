@@ -6,14 +6,18 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,6 +49,8 @@ public class Configuracion implements Serializable {
     private Integer nave;
     @Column(name = "luna")
     private Integer luna;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idConfiguracion")
+    private List<Puntuacion> puntuacionList;
 
     public Configuracion() {
     }
@@ -96,6 +102,15 @@ public class Configuracion implements Serializable {
 
     public void setLuna(Integer luna) {
         this.luna = luna;
+    }
+
+    @XmlTransient
+    public List<Puntuacion> getPuntuacionList() {
+        return puntuacionList;
+    }
+
+    public void setPuntuacionList(List<Puntuacion> puntuacionList) {
+        this.puntuacionList = puntuacionList;
     }
 
     @Override

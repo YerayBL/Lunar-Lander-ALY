@@ -15,7 +15,9 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import model.Configuracion;
 import model.Puntuacion;
+import model.Usuario;
 
 /**
  *
@@ -37,7 +39,25 @@ public class PuntuacionJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Configuracion idConfiguracion = puntuacion.getIdConfiguracion();
+            if (idConfiguracion != null) {
+                idConfiguracion = em.getReference(idConfiguracion.getClass(), idConfiguracion.getIdConfiguracion());
+                puntuacion.setIdConfiguracion(idConfiguracion);
+            }
+            Usuario idUsuario = puntuacion.getIdUsuario();
+            if (idUsuario != null) {
+                idUsuario = em.getReference(idUsuario.getClass(), idUsuario.getIdUsuario());
+                puntuacion.setIdUsuario(idUsuario);
+            }
             em.persist(puntuacion);
+            if (idConfiguracion != null) {
+                idConfiguracion.getPuntuacionList().add(puntuacion);
+                idConfiguracion = em.merge(idConfiguracion);
+            }
+            if (idUsuario != null) {
+                idUsuario.getPuntuacionList().add(puntuacion);
+                idUsuario = em.merge(idUsuario);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findPuntuacion(puntuacion.getIdPuntuacion()) != null) {
@@ -56,7 +76,36 @@ public class PuntuacionJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Puntuacion persistentPuntuacion = em.find(Puntuacion.class, puntuacion.getIdPuntuacion());
+            Configuracion idConfiguracionOld = persistentPuntuacion.getIdConfiguracion();
+            Configuracion idConfiguracionNew = puntuacion.getIdConfiguracion();
+            Usuario idUsuarioOld = persistentPuntuacion.getIdUsuario();
+            Usuario idUsuarioNew = puntuacion.getIdUsuario();
+            if (idConfiguracionNew != null) {
+                idConfiguracionNew = em.getReference(idConfiguracionNew.getClass(), idConfiguracionNew.getIdConfiguracion());
+                puntuacion.setIdConfiguracion(idConfiguracionNew);
+            }
+            if (idUsuarioNew != null) {
+                idUsuarioNew = em.getReference(idUsuarioNew.getClass(), idUsuarioNew.getIdUsuario());
+                puntuacion.setIdUsuario(idUsuarioNew);
+            }
             puntuacion = em.merge(puntuacion);
+            if (idConfiguracionOld != null && !idConfiguracionOld.equals(idConfiguracionNew)) {
+                idConfiguracionOld.getPuntuacionList().remove(puntuacion);
+                idConfiguracionOld = em.merge(idConfiguracionOld);
+            }
+            if (idConfiguracionNew != null && !idConfiguracionNew.equals(idConfiguracionOld)) {
+                idConfiguracionNew.getPuntuacionList().add(puntuacion);
+                idConfiguracionNew = em.merge(idConfiguracionNew);
+            }
+            if (idUsuarioOld != null && !idUsuarioOld.equals(idUsuarioNew)) {
+                idUsuarioOld.getPuntuacionList().remove(puntuacion);
+                idUsuarioOld = em.merge(idUsuarioOld);
+            }
+            if (idUsuarioNew != null && !idUsuarioNew.equals(idUsuarioOld)) {
+                idUsuarioNew.getPuntuacionList().add(puntuacion);
+                idUsuarioNew = em.merge(idUsuarioNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -85,6 +134,16 @@ public class PuntuacionJpaController implements Serializable {
                 puntuacion.getIdPuntuacion();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The puntuacion with id " + id + " no longer exists.", enfe);
+            }
+            Configuracion idConfiguracion = puntuacion.getIdConfiguracion();
+            if (idConfiguracion != null) {
+                idConfiguracion.getPuntuacionList().remove(puntuacion);
+                idConfiguracion = em.merge(idConfiguracion);
+            }
+            Usuario idUsuario = puntuacion.getIdUsuario();
+            if (idUsuario != null) {
+                idUsuario.getPuntuacionList().remove(puntuacion);
+                idUsuario = em.merge(idUsuario);
             }
             em.remove(puntuacion);
             em.getTransaction().commit();

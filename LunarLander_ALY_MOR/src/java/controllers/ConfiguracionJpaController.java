@@ -5,16 +5,19 @@
  */
 package controllers;
 
+import controllers.exceptions.IllegalOrphanException;
 import controllers.exceptions.NonexistentEntityException;
 import controllers.exceptions.PreexistingEntityException;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import model.Puntuacion;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import model.Configuracion;
 
 /**
@@ -33,11 +36,29 @@ public class ConfiguracionJpaController implements Serializable {
     }
 
     public void create(Configuracion configuracion) throws PreexistingEntityException, Exception {
+        if (configuracion.getPuntuacionList() == null) {
+            configuracion.setPuntuacionList(new ArrayList<Puntuacion>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<Puntuacion> attachedPuntuacionList = new ArrayList<Puntuacion>();
+            for (Puntuacion puntuacionListPuntuacionToAttach : configuracion.getPuntuacionList()) {
+                puntuacionListPuntuacionToAttach = em.getReference(puntuacionListPuntuacionToAttach.getClass(), puntuacionListPuntuacionToAttach.getIdPuntuacion());
+                attachedPuntuacionList.add(puntuacionListPuntuacionToAttach);
+            }
+            configuracion.setPuntuacionList(attachedPuntuacionList);
             em.persist(configuracion);
+            for (Puntuacion puntuacionListPuntuacion : configuracion.getPuntuacionList()) {
+                Configuracion oldIdConfiguracionOfPuntuacionListPuntuacion = puntuacionListPuntuacion.getIdConfiguracion();
+                puntuacionListPuntuacion.setIdConfiguracion(configuracion);
+                puntuacionListPuntuacion = em.merge(puntuacionListPuntuacion);
+                if (oldIdConfiguracionOfPuntuacionListPuntuacion != null) {
+                    oldIdConfiguracionOfPuntuacionListPuntuacion.getPuntuacionList().remove(puntuacionListPuntuacion);
+                    oldIdConfiguracionOfPuntuacionListPuntuacion = em.merge(oldIdConfiguracionOfPuntuacionListPuntuacion);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findConfiguracion(configuracion.getIdConfiguracion()) != null) {
@@ -51,12 +72,45 @@ public class ConfiguracionJpaController implements Serializable {
         }
     }
 
-    public void edit(Configuracion configuracion) throws NonexistentEntityException, Exception {
+    public void edit(Configuracion configuracion) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Configuracion persistentConfiguracion = em.find(Configuracion.class, configuracion.getIdConfiguracion());
+            List<Puntuacion> puntuacionListOld = persistentConfiguracion.getPuntuacionList();
+            List<Puntuacion> puntuacionListNew = configuracion.getPuntuacionList();
+            List<String> illegalOrphanMessages = null;
+            for (Puntuacion puntuacionListOldPuntuacion : puntuacionListOld) {
+                if (!puntuacionListNew.contains(puntuacionListOldPuntuacion)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Puntuacion " + puntuacionListOldPuntuacion + " since its idConfiguracion field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            List<Puntuacion> attachedPuntuacionListNew = new ArrayList<Puntuacion>();
+            for (Puntuacion puntuacionListNewPuntuacionToAttach : puntuacionListNew) {
+                puntuacionListNewPuntuacionToAttach = em.getReference(puntuacionListNewPuntuacionToAttach.getClass(), puntuacionListNewPuntuacionToAttach.getIdPuntuacion());
+                attachedPuntuacionListNew.add(puntuacionListNewPuntuacionToAttach);
+            }
+            puntuacionListNew = attachedPuntuacionListNew;
+            configuracion.setPuntuacionList(puntuacionListNew);
             configuracion = em.merge(configuracion);
+            for (Puntuacion puntuacionListNewPuntuacion : puntuacionListNew) {
+                if (!puntuacionListOld.contains(puntuacionListNewPuntuacion)) {
+                    Configuracion oldIdConfiguracionOfPuntuacionListNewPuntuacion = puntuacionListNewPuntuacion.getIdConfiguracion();
+                    puntuacionListNewPuntuacion.setIdConfiguracion(configuracion);
+                    puntuacionListNewPuntuacion = em.merge(puntuacionListNewPuntuacion);
+                    if (oldIdConfiguracionOfPuntuacionListNewPuntuacion != null && !oldIdConfiguracionOfPuntuacionListNewPuntuacion.equals(configuracion)) {
+                        oldIdConfiguracionOfPuntuacionListNewPuntuacion.getPuntuacionList().remove(puntuacionListNewPuntuacion);
+                        oldIdConfiguracionOfPuntuacionListNewPuntuacion = em.merge(oldIdConfiguracionOfPuntuacionListNewPuntuacion);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -74,7 +128,7 @@ public class ConfiguracionJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException {
+    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -85,6 +139,17 @@ public class ConfiguracionJpaController implements Serializable {
                 configuracion.getIdConfiguracion();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The configuracion with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            List<Puntuacion> puntuacionListOrphanCheck = configuracion.getPuntuacionList();
+            for (Puntuacion puntuacionListOrphanCheckPuntuacion : puntuacionListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Configuracion (" + configuracion + ") cannot be destroyed since the Puntuacion " + puntuacionListOrphanCheckPuntuacion + " in its puntuacionList field has a non-nullable idConfiguracion field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(configuracion);
             em.getTransaction().commit();
