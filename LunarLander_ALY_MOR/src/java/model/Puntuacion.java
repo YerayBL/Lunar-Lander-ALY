@@ -54,7 +54,7 @@ public class Puntuacion implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
     @JoinColumn(name = "id_configuracion", referencedColumnName = "id_configuracion")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Configuracion idConfiguracion;
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)

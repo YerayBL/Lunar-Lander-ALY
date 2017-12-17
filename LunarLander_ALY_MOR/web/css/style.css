@@ -1,0 +1,366 @@
+*{
+    padding:0em;
+    margin:0em;
+}
+body{
+    background-image: url("../img/fondo.png");
+    color:black;   
+}
+
+#izquierda{
+    width: 35%;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    background-image: url("../img/mundo.png");
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: left bottom;;
+}
+#derecha{
+    background-image: url("../img/sol.png");
+    background-repeat: no-repeat;
+    background-position: right; 
+    background-size: 30%;
+    display:block !important;
+    pointer-events: auto;
+    width:35%; height:100%;
+    position: fixed; right: 0px;
+}
+#nave{
+	text-align:center;
+	position: fixed;
+	top:5%;
+       
+	width:100%;
+	height:15%;
+}
+#imgNave{
+        margin-left: 20%;
+	height:100%;
+	display: block;
+        z-index: 0;
+}
+#imgMotor{
+	height: 40%;
+	display: none;
+	margin: auto;
+}
+
+.controlesNave{
+    width: auto; height: auto; 
+    max-width: 150px;
+    background-color: #00FA9A;
+    margin: 10px;
+    width: 100%;
+    border-style: outset;
+    border-color: #2E8B57;
+    font-size: 120%;
+    padding: 2px;
+    margin-bottom: 15px;
+}
+
+#zonaAterrizaje{
+    height: 10%;
+    position:fixed;
+    bottom:0px;
+}
+#luna {
+    height:100%; 
+    width: 800px;
+}
+
+#mundo{
+    height: 100%; 
+    width: 100%;
+}
+
+#botonOn{
+    display: none;
+}
+
+#close {
+	background-color:#00FA9A;
+	border-style: solid;
+	border-color: #2E8B57;
+	width: 15%;
+	max-width: 50px;
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+/*CONTROLES*/
+
+#reanudar:active {border-style: inset;}
+#reanudar:hover {background-color: #2E8B57; font-size: 100%;}
+#pausa:active {border-style: inset;}
+#pausa:hover {background-color: #2E8B57; font-size: 100%;}
+#reinicia:active {border-style: inset;}
+#reinicia:hover {background-color: #2E8B57; font-size: 100%;}
+#instrucciones:active {border-style: inset;}
+#instrucciones:hover {background-color: #2E8B57; font-size: 100%;}
+#botonAjustes:active {border-style: inset;}
+#botonAjustes:hover {background-color: #2E8B57; font-size: 100%;}
+#listaPartidas:active {border-style: inset;}
+#listaPartidas:hover {background-color: #2E8B57; font-size: 100%;}
+#usuarioLine:active {border-style: inset;}
+#usuarioLine:hover {background-color: #2E8B57; font-size: 100%;}
+#close:active {border-style: inset;}
+#close:hover {background-color: #2E8B57;}
+
+#reanudar {
+    border-style: outset;
+    border-color: #2E8B57;
+    display: none;
+    float: right;
+    background-color: #00FA9A;
+    margin: 10px;
+    margin-top: 5%;
+    color: black;
+    font-size: 0%;
+    text-align: center;
+    width: 70px;
+    height: 70px;
+    background-image: url("../img/play.png");
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position: 50% 50%;
+    pointer-events: auto;
+}
+#reanudar p {
+    margin-top: 0px;
+}
+
+#pausa {
+    border-style: outset;
+    border-color: #2E8B57;
+    display: inline-block;
+    float: right;
+    background-color: #00FA9A;
+    margin: 10px;
+    margin-top: 5%;
+    color: black;
+    text-align: center;
+    font-size: 0%;
+    width: 70px;
+    height: 70px;
+    background-image: url("../img/pausa.png");
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: 50% 50%;
+}
+#reinicia {
+    border-style: outset;
+    border-color: #2E8B57;
+    display: inline-block;
+    width: 70px; height: 70px;
+    float: right;
+    font-size: 0%;
+    color: black;
+    text-align: center;
+    vertical-align: text-top;
+    background-color: #00FA9A;
+    margin: 10px;
+    margin-top: 5%;
+    background-image: url("../img/reinicia.png");
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: 50% 50%;
+}
+#reinicia p {
+    margin-top: 0px;
+}
+#instrucciones {
+    border-style: outset;
+    border-color: #2E8B57;
+    display: inline-block;
+    float: right;
+    background-color: #00FA9A;
+    margin: 10px;
+    margin-top: 5%;
+    width: 70px;
+    height: 70px;
+    color: black;
+    text-align: center;
+    font-size: 0%;
+    background-image: url("../img/ayuda.png");
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position: 50% 50%;
+}
+#instrucciones p {
+    margin-top: 0px;
+}
+/*AJUSTES*/
+
+#botonAjustes {
+    border-style: outset;
+    border-color: #2E8B57;
+    display: inline-block;
+    float: right;
+    background-color: #00FA9A;
+    margin: 10px;
+    margin-top: 5%;
+    width: 70px;
+    height: 70px;
+    color: black;
+    text-align: center;
+    font-size: 0%;
+    background-image: url("../img/settings.png");
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position: 50% 50%;
+}
+#botonAjustes p {
+    margin-top: 0px;
+}
+/*BOTON LISTAR PARTIDA*/
+#listaPartidas{
+    border-style: outset;
+	border-color: #2E8B57;
+	display: inline-block;
+	float: right;
+	background-color: #00FA9A;
+	margin: 10px;
+	margin-top: 5%;
+	width: 70px;
+	height: 70px;
+	color: black;
+	text-align: center;
+	font-size: 0%;
+	background-image: url("../img/settings.png");
+	background-repeat: no-repeat;
+	background-size: 60%;
+	background-position: 50% 50%;
+}
+#listaPartidas{
+   margin-top: 0px;
+} 
+/*USUARIOS EN LINEA*/
+#usuarioLine{
+   border-style: outset;
+	border-color: #2E8B57;
+	display: inline-block;
+	float: right;
+	background-color: #00FA9A;
+	margin: 10px;
+	margin-top: 5%;
+	width: 70px;
+	height: 70px;
+	color: black;
+	text-align: center;
+	font-size: 0%;
+	background-image: url("../img/settings.png");
+	background-repeat: no-repeat;
+	background-size: 60%;
+	background-position: 50% 50%;  
+}
+#usuarioLine{
+   margin-top: 0px;
+}
+
+/*SETTING*/
+#settingsUsuarios{
+	display: none;
+	background-image: url("../img/fondo_estrellado.jpg");
+	text-align: center;
+	border-style: outset;
+	position: absolute;
+	width: 80%;
+	left: 10%;
+	top: 7%;
+        text-align: center;
+        color:white;
+        float:left;
+}
+
+#settingsLista{
+	display: none;
+	background-image: url("../img/fondo_estrellado.jpg");
+	text-align: center;
+	border-style: outset;
+	position: absolute;
+	width: 80%;
+	left: 10%;
+	top: 7%;
+        text-align: center;
+        color:white;
+        float:left;
+}
+
+#settings{
+	display: none;
+	background-image: url("../img/fondo_estrellado.jpg");
+	text-align: center;
+	border-style: outset;
+	position: absolute;
+	width: 80%;
+	left: 10%;
+	top: 7%;
+        text-align: center;
+        color:white;
+}
+#dificultad {
+	padding: 10px;
+	font-size: 120%;
+}
+#modeloLuna {
+	padding: 10px;
+	font-size: 120%;
+}
+#modeloNave {
+	padding: 10px;
+	font-size: 120%;
+}
+
+#gameOver{
+	background-image: url("../img/fondo_instrucciones.jpg");
+	text-align: center;
+	border-style: outset;
+	position: absolute;
+	display: none;
+	width: 80%;
+	left: 10%;
+	top: 10%;
+}
+
+#userWin{
+	background-image: url("../img/fondo_instrucciones.jpg");
+	text-align: center;
+	border-style: outset;
+	position: absolute;
+	display: none;
+	width: 80%;
+	left: 10%;
+	top: 10%;
+}
+
+#menuInstrucciones {
+	background-image: url("../img/fondo_estrellado.jpg");
+        width: 80%;
+        height: auto;
+        left: 10%;
+	top: 7%;
+	border-style: outset;
+	position: absolute;
+	display: none;
+        color: #ffffff;
+        padding: 2em;
+}
+#menuInstrucciones b {
+	background-color: darkorange;
+	border-style: outset;
+}
+
+
+
+
+
+
+
+
+
+
+
+

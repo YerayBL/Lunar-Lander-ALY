@@ -5,7 +5,6 @@
  */
 package controllers;
 
-import controllers.exceptions.IllegalOrphanException;
 import controllers.exceptions.NonexistentEntityException;
 import controllers.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -72,7 +71,7 @@ public class ConfiguracionJpaController implements Serializable {
         }
     }
 
-    public void edit(Configuracion configuracion) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Configuracion configuracion) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -80,18 +79,6 @@ public class ConfiguracionJpaController implements Serializable {
             Configuracion persistentConfiguracion = em.find(Configuracion.class, configuracion.getIdConfiguracion());
             List<Puntuacion> puntuacionListOld = persistentConfiguracion.getPuntuacionList();
             List<Puntuacion> puntuacionListNew = configuracion.getPuntuacionList();
-            List<String> illegalOrphanMessages = null;
-            for (Puntuacion puntuacionListOldPuntuacion : puntuacionListOld) {
-                if (!puntuacionListNew.contains(puntuacionListOldPuntuacion)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Puntuacion " + puntuacionListOldPuntuacion + " since its idConfiguracion field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             List<Puntuacion> attachedPuntuacionListNew = new ArrayList<Puntuacion>();
             for (Puntuacion puntuacionListNewPuntuacionToAttach : puntuacionListNew) {
                 puntuacionListNewPuntuacionToAttach = em.getReference(puntuacionListNewPuntuacionToAttach.getClass(), puntuacionListNewPuntuacionToAttach.getIdPuntuacion());
@@ -100,6 +87,12 @@ public class ConfiguracionJpaController implements Serializable {
             puntuacionListNew = attachedPuntuacionListNew;
             configuracion.setPuntuacionList(puntuacionListNew);
             configuracion = em.merge(configuracion);
+            for (Puntuacion puntuacionListOldPuntuacion : puntuacionListOld) {
+                if (!puntuacionListNew.contains(puntuacionListOldPuntuacion)) {
+                    puntuacionListOldPuntuacion.setIdConfiguracion(null);
+                    puntuacionListOldPuntuacion = em.merge(puntuacionListOldPuntuacion);
+                }
+            }
             for (Puntuacion puntuacionListNewPuntuacion : puntuacionListNew) {
                 if (!puntuacionListOld.contains(puntuacionListNewPuntuacion)) {
                     Configuracion oldIdConfiguracionOfPuntuacionListNewPuntuacion = puntuacionListNewPuntuacion.getIdConfiguracion();
@@ -128,7 +121,7 @@ public class ConfiguracionJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -140,16 +133,10 @@ public class ConfiguracionJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The configuracion with id " + id + " no longer exists.", enfe);
             }
-            List<String> illegalOrphanMessages = null;
-            List<Puntuacion> puntuacionListOrphanCheck = configuracion.getPuntuacionList();
-            for (Puntuacion puntuacionListOrphanCheckPuntuacion : puntuacionListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Configuracion (" + configuracion + ") cannot be destroyed since the Puntuacion " + puntuacionListOrphanCheckPuntuacion + " in its puntuacionList field has a non-nullable idConfiguracion field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
+            List<Puntuacion> puntuacionList = configuracion.getPuntuacionList();
+            for (Puntuacion puntuacionListPuntuacion : puntuacionList) {
+                puntuacionListPuntuacion.setIdConfiguracion(null);
+                puntuacionListPuntuacion = em.merge(puntuacionListPuntuacion);
             }
             em.remove(configuracion);
             em.getTransaction().commit();

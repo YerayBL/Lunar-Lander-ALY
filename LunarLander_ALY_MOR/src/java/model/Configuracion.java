@@ -8,7 +8,6 @@ package model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -49,7 +48,7 @@ public class Configuracion implements Serializable {
     private Integer nave;
     @Column(name = "luna")
     private Integer luna;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idConfiguracion")
+    @OneToMany(mappedBy = "idConfiguracion")
     private List<Puntuacion> puntuacionList;
 
     public Configuracion() {

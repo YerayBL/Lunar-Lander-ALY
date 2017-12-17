@@ -5,18 +5,13 @@
  */
 package gson;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
-import model.Puntuacion;
-
 
 public class Puntuaciones implements Serializable {
 
-    @SerializedName("puntuacion")
-    @Expose
-    private List<Puntuacion> puntuacion = null;
+   
+    private List<PuntuacionGson> puntuacion = null;
     private final static long serialVersionUID = 4418342885309929295L;
 
     /**
@@ -28,22 +23,22 @@ public class Puntuaciones implements Serializable {
 
     /**
      *
-     * @param score
+     * @param puntuacion
      */
-    public Puntuaciones(List<Puntuacion> puntuacion) {
+    public Puntuaciones(List<PuntuacionGson> puntuacion) {
         super();
         this.puntuacion = puntuacion;
     }
 
-    public List<Puntuacion> getPuntuacion() {
+    public List<PuntuacionGson> getPuntuacion() {
         return puntuacion;
     }
 
-    public void setConfiguracion(List<Puntuacion> puntuacion) {
-        this.puntuacion= puntuacion;
+    public void setPuntuacion(List<PuntuacionGson> puntuacion) {
+        this.puntuacion = puntuacion;
     }
 
-    public Puntuaciones withScore(List<Puntuacion> puntuacion) {
+    public Puntuaciones withPuntuacion(List<PuntuacionGson> puntuacion) {
         this.puntuacion = puntuacion;
         return this;
     }
