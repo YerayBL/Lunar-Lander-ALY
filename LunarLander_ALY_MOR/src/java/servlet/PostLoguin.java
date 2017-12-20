@@ -1,18 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de registro básico (usuario,password, cookies)
  */
 package servlet;
-
-
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,8 +31,7 @@ public class PostLoguin extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
+
     }/*
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,7 +43,7 @@ public class PostLoguin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // processRequest(request, response);
-       EntityManagerFactory emf = (EntityManagerFactory) getServletContext ().getAttribute( "emf");
+        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager entitymanager = emf.createEntityManager();
         // CREAR Y RECUPERAR COOKIE
         String cookieName = "cookie_usuario";

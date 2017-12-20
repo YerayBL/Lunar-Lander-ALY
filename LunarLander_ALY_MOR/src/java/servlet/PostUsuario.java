@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Insertar datos de usuarios
  */
 package servlet;
 
@@ -9,7 +7,6 @@ import controllers.UsuarioJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +30,7 @@ public class PostUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-       EntityManagerFactory emf = (EntityManagerFactory) getServletContext ().getAttribute( "emf");
+        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         try {
             String id_usuario = request.getParameter("id_usuario");
             String nombre = request.getParameter("nombre");
@@ -57,7 +54,7 @@ public class PostUsuario extends HttpServlet {
 
         } catch (Exception e) {
             String mensaje_error = "{\"error\":\"Ha sido imposible guardar los datos\"}";
-            if (e.getMessage().contains("Duplicate entry")) {
+            if (e.getMessage().contains("already exists")) {
                 mensaje_error = "{\"error\":\"Ya existe un usuario registrado con ese id\"}";
             }
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

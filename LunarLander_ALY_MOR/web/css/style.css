@@ -28,23 +28,22 @@ body{
     position: fixed; right: 0px;
 }
 #nave{
-	text-align:center;
-	position: fixed;
-	top:5%;
-       
-	width:100%;
-	height:15%;
+    text-align:center;
+    position: fixed;
+    top:5%;
+    width:50%;
+    height:15%;
 }
 #imgNave{
-        margin-left: 20%;
-	height:100%;
-	display: block;
-        z-index: 0;
+    margin:auto;
+    height:100%;
+    display: block;
+    z-index: 0;
 }
 #imgMotor{
-	height: 40%;
-	display: none;
-	margin: auto;
+    margin:auto;
+    height: 40%;
+    display: none;
 }
 
 .controlesNave{
@@ -80,14 +79,14 @@ body{
 }
 
 #close {
-	background-color:#00FA9A;
-	border-style: solid;
-	border-color: #2E8B57;
-	width: 15%;
-	max-width: 50px;
-	position: absolute;
-	top: 2px;
-	right: 2px;
+    background-color:#00FA9A;
+    border-style: solid;
+    border-color: #2E8B57;
+    width: 15%;
+    max-width: 50px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
 }
 
 /*CONTROLES*/
@@ -218,142 +217,145 @@ body{
 /*BOTON LISTAR PARTIDA*/
 #listaPartidas{
     border-style: outset;
-	border-color: #2E8B57;
-	display: inline-block;
-	float: right;
-	background-color: #00FA9A;
-	margin: 10px;
-	margin-top: 5%;
-	width: 70px;
-	height: 70px;
-	color: black;
-	text-align: center;
-	font-size: 0%;
-	background-image: url("../img/settings.png");
-	background-repeat: no-repeat;
-	background-size: 60%;
-	background-position: 50% 50%;
+    border-color: #2E8B57;
+    display: inline-block;
+    float: right;
+    background-color: #00FA9A;
+    margin: 10px;
+    margin-top: 5%;
+    width: 70px;
+    height: 70px;
+    color: black;
+    text-align: center;
+    font-size: 0%;
+    background-image: url("../img/settings.png");
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position: 50% 50%;
 }
 #listaPartidas{
-   margin-top: 0px;
+    margin-top: 0px;
 } 
 /*USUARIOS EN LINEA*/
 #usuarioLine{
-   border-style: outset;
-	border-color: #2E8B57;
-	display: inline-block;
-	float: right;
-	background-color: #00FA9A;
-	margin: 10px;
-	margin-top: 5%;
-	width: 70px;
-	height: 70px;
-	color: black;
-	text-align: center;
-	font-size: 0%;
-	background-image: url("../img/settings.png");
-	background-repeat: no-repeat;
-	background-size: 60%;
-	background-position: 50% 50%;  
+    border-style: outset;
+    border-color: #2E8B57;
+    display: inline-block;
+    float: right;
+    background-color: #00FA9A;
+    margin: 10px;
+    margin-top: 5%;
+    width: 70px;
+    height: 70px;
+    color: black;
+    text-align: center;
+    font-size: 0%;
+    background-image: url("../img/settings.png");
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position: 50% 50%;  
 }
 #usuarioLine{
-   margin-top: 0px;
+    margin-top: 0px;
 }
 
 /*SETTING*/
 #settingsUsuarios{
-	display: none;
-	background-image: url("../img/fondo_estrellado.jpg");
-	text-align: center;
-	border-style: outset;
-	position: absolute;
-	width: 80%;
-	left: 10%;
-	top: 7%;
-        text-align: center;
-        color:white;
-        float:left;
+    display: none;
+    background-image: url("../img/fondo_estrellado.jpg");
+    text-align: center;
+    border-style: outset;
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    top: 7%;
+    text-align: center;
+    color:white;
+    float:left;
 }
 
 #settingsLista{
-	display: none;
-	background-image: url("../img/fondo_estrellado.jpg");
-	text-align: center;
-	border-style: outset;
-	position: absolute;
-	width: 80%;
-	left: 10%;
-	top: 7%;
-        text-align: center;
-        color:white;
-        float:left;
+    display: none;
+    background-image: url("../img/fondo_estrellado.jpg");
+    text-align: center;
+    border-style: outset;
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    top: 7%;
+    text-align: center;
+    color:white;
+    float:left;
 }
 
 #settings{
-	display: none;
-	background-image: url("../img/fondo_estrellado.jpg");
-	text-align: center;
-	border-style: outset;
-	position: absolute;
-	width: 80%;
-	left: 10%;
-	top: 7%;
-        text-align: center;
-        color:white;
+    display: none;
+    background-image: url("../img/fondo_estrellado.jpg");
+    text-align: center;
+    border-style: outset;
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    top: 7%;
+    text-align: center;
+    color:white;
 }
 #dificultad {
-	padding: 10px;
-	font-size: 120%;
+    padding: 10px;
+    font-size: 120%;
 }
 #modeloLuna {
-	padding: 10px;
-	font-size: 120%;
+    padding: 10px;
+    font-size: 120%;
 }
 #modeloNave {
-	padding: 10px;
-	font-size: 120%;
+    padding: 10px;
+    font-size: 120%;
 }
 
 #gameOver{
-	background-image: url("../img/fondo_instrucciones.jpg");
-	text-align: center;
-	border-style: outset;
-	position: absolute;
-	display: none;
-	width: 80%;
-	left: 10%;
-	top: 10%;
+    background-image: url("../img/fondo_instrucciones.jpg");
+    text-align: center;
+    border-style: outset;
+    position: absolute;
+    display: none;
+    width: 80%;
+    left: 10%;
+    top: 10%;
 }
 
 #userWin{
-	background-image: url("../img/fondo_instrucciones.jpg");
-	text-align: center;
-	border-style: outset;
-	position: absolute;
-	display: none;
-	width: 80%;
-	left: 10%;
-	top: 10%;
+    background-image: url("../img/fondo_instrucciones.jpg");
+    text-align: center;
+    border-style: outset;
+    position: absolute;
+    display: none;
+    width: 80%;
+    left: 10%;
+    top: 10%;
 }
 
 #menuInstrucciones {
-	background-image: url("../img/fondo_estrellado.jpg");
-        width: 80%;
-        height: auto;
-        left: 10%;
-	top: 7%;
-	border-style: outset;
-	position: absolute;
-	display: none;
-        color: #ffffff;
-        padding: 2em;
+    background-image: url("../img/fondo_estrellado.jpg");
+    width: 80%;
+    height: auto;
+    left: 10%;
+    top: 7%;
+    border-style: outset;
+    position: absolute;
+    display: none;
+    color: #ffffff;
+    padding: 2em;
 }
 #menuInstrucciones b {
-	background-color: darkorange;
-	border-style: outset;
+    background-color: darkorange;
+    border-style: outset;
 }
 
-
+.ul_list{
+    font-size: 1.5em;
+    list-style: none;
+}
 
 
 

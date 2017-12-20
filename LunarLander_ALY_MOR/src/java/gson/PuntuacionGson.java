@@ -21,6 +21,7 @@ public class PuntuacionGson implements Serializable {
     private Integer idPuntuacion;
     
     private BigDecimal velocidad;
+   
     private Integer fuel;
     
     private Date initTime;
@@ -93,8 +94,6 @@ public class PuntuacionGson implements Serializable {
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
-
-
     
 }
 

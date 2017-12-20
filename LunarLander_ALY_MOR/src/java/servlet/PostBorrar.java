@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Borrar configuraciones
  */
 package servlet;
 
@@ -12,7 +10,6 @@ import java.io.PrintWriter;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +29,7 @@ public class PostBorrar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        EntityManagerFactory emf = (EntityManagerFactory) getServletContext ().getAttribute( "emf");
+        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
 
         String v_id_configuracion = request.getParameter("id_configuracion");
         String v_id_usuario = request.getParameter("id_usuario");

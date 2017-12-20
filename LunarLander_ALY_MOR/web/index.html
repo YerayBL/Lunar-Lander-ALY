@@ -83,7 +83,75 @@ and open the template in the editor.
                     }
                 });
             }
+            /*LISTA USUARIOS ONLINE*/
             $(document).ready(function () {
+                $("#botonlistaUsuarios").click(function () {
+                    // guardamos el usuario q se ha logeado
+                    //v_id_usuario = $("#id_usuario").val();
+                    var url = "GetUsuariosOnLine";
+                    var emess = "Error desconocido al listar usuarios.";
+                    $.ajax({
+                        method: "GET",
+                        url: url,
+                        dataType: 'json',
+                        success: function (p_json) {
+                            // primero limpiamos la lista de elementos
+                            var myNode = document.getElementById("usuariosOnline");
+                            while (myNode.firstChild) {
+                                myNode.removeChild(myNode.firstChild);
+                            }
+                            // rellenamos con lo que recibimos
+                            for (var i in p_json.usuario) {
+                                var node = document.createElement("li");
+                                var textnode = document.createTextNode(p_json.usuario[i].idUsuario + " " + p_json.usuario[i].nombre);
+                                node.appendChild(textnode);
+                                document.getElementById("usuariosOnline").appendChild(node);
+                            }
+
+                        },
+                        error: function (e) {
+                            if (e["responseJSON"] === undefined) {
+                                alert(emess);
+                            } else {
+                                alert(e["responseJSON"]["error"]);
+                            }
+                        }
+                    });
+                });//FIN USUARIOS ONLINE
+                /*USUARIOS TOP 10*/
+                $("#botonlistaPartidas").click(function () {
+                    // guardamos el usuario q se ha logeado
+                    //v_id_usuario = $("#id_usuario").val();
+                    var url = "GetTopJugadores";
+                    var emess = "Error desconocido al listar usuarios.";
+                    $.ajax({
+                        method: "GET",
+                        url: url,
+                        dataType: 'json',
+                        success: function (p_json) {
+                            // primero limpiamos la lista de elementos
+                            var myNode = document.getElementById("usuariosTop");
+                            while (myNode.firstChild) {
+                                myNode.removeChild(myNode.firstChild);
+                            }
+                            // rellenamos con lo que recibimos
+                            for (var i in p_json.touser) {
+                                var node = document.createElement("li");
+                                var textnode = document.createTextNode(p_json.touser[i][0] + " " + p_json.touser[i][1]);
+                                node.appendChild(textnode);
+                                document.getElementById("usuariosTop").appendChild(node);
+                            }
+                        },
+                        error: function (e) {
+                            if (e["responseJSON"] === undefined) {
+                                alert(emess);
+                            } else {
+                                alert(e["responseJSON"]["error"]);
+                            }
+                        }
+                    });
+                });//FIN USUARIOS TOP
+                /*LOGIN USUARIO*/
                 $("#login").click(function () {
                     // guardamos el usuario q se ha logeado
                     //v_id_usuario = $("#id_usuario").val();
@@ -124,11 +192,11 @@ and open the template in the editor.
                         }
                     });
 
-                });
+                });//FIN LOGIN USUARIO
                 $("#enviarUser").click(function () { //onclick event
                     var url = "PostUsuario";
                     var emess = "Error desconocido al registrar";
-                    if ($("#id_usuario_reg").val() != "" && $("#nombre_reg").val() != "" && $("#apellido_reg").val() != "" && $("#password_reg").val() != "") {
+                    if ($("#id_usuario_reg").val() !== "" && $("#nombre_reg").val() !== "" && $("#apellido_reg").val() !== "" && $("#password_reg").val() !== "") {
                         $.ajax({
                             method: "POST",
                             url: url,
@@ -155,24 +223,28 @@ and open the template in the editor.
                     var p_id = $("#id").val();
                     // la variable id del js coge el valor del input que hemos puesto en p_id
                     id = p_id;
-                    $.ajax({
-                        method: "POST",
-                        url: url,
-                        dataType: 'json',
-                        data: {id_configuracion: $("#id").val(), id_usuario: v_id_usuario, dificultad: dificultad, luna: modeloLuna, nave: modeloNave},
-                        success: function (p_json) {
-                            v_json = p_json;
-                            alert("La configuración se ha añadido con exito.");
-                            $('#configuraciones').append("<option value=" + p_id + ">" + p_id + "</option>");
-                        },
-                        error: function (e) {
-                            if (e["responseJSON"] === undefined) {
-                                alert(emess);
-                            } else {
-                                alert(e["responseJSON"]["error"]);
+                    if ($("#id").val() !== "") {
+                        $.ajax({
+                            method: "POST",
+                            url: url,
+                            dataType: 'json',
+                            data: {id_configuracion: $("#id").val(), id_usuario: v_id_usuario, dificultad: dificultad, luna: modeloLuna, nave: modeloNave},
+                            success: function (p_json) {
+                                v_json = p_json;
+                                alert("La configuración se ha añadido con exito.");
+                                $('#configuraciones').append("<option value=" + p_id + ">" + p_id + "</option>");
+                            },
+                            error: function (e) {
+                                if (e["responseJSON"] === undefined) {
+                                    alert(emess);
+                                } else {
+                                    alert(e["responseJSON"]["error"]);
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        alert("Error..! Completa todos los campos.");
+                    }
                 });
                 $("#cargar").click(function () {
                     v_seleccionado = $('#configuraciones').val();
@@ -226,6 +298,7 @@ and open the template in the editor.
                     $("#myLogin").modal();
                 }
             });
+
         </script>
     </head>
     <body>
@@ -247,7 +320,7 @@ and open the template in the editor.
                         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                             <div id="nave">
                                 <img id ="imgNave" src="img/nave.png" alt="img nave" class="img-responsive">
-                                <img id ="imgMotor" src="img/motor.gif" alt="img motor">
+                                <img id ="imgMotor" src="img/motor.gif" alt="img motor" class="img-responsive">
                             </div>
                         </div>
                         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -385,13 +458,10 @@ and open the template in the editor.
                        <div class="col-md-8 col-lg-8">-->
                 <br>
                 <br>
-                <h3>lISTADO DE PARTIDAS</h3> 
-                <br>
-                <ul class="list-inline">
-                    <li class="list-group-item list-group-item-info active">Partida</li>
-                    <li class="list-group-item list-group-item-info">Configuraciòn</li>
-                    <li class="list-group-item list-group-item-info">Puntuación</li>
-                    <li class="list-group-item list-group-item-info">Duración</li>
+                <h3>USUARIOS 10 TOP PARTIDAS</h3> 
+                <ul id="usuariosTop" class="ul_list">
+                    <li></li>
+
                 </ul>
             </div>
         </div>
@@ -405,11 +475,13 @@ and open the template in the editor.
               <div class="col-md-8 col-lg-8">-->
         <br>
         <br>
-        <h3>lISTADO DE USUARIS ON-LINE</h3> 
+        <h3>USUARIOS ONLINE</h3> 
         <br>
-        <ul class="list-inline">
-            <li class="list-group-item list-group-item-info">Usuarios on-line</li>
+
+        <ul id="usuariosOnline" class="ul_list">
+            <li></li>
         </ul>
+
     </div>
 </div><!--FIN LISTADO DE USURIOS ON-LINE-->
 <!--LOGIN MODAL-->

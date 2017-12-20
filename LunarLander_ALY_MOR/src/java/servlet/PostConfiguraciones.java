@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Guarda las configuraciones
  */
 package servlet;
 
@@ -14,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +33,7 @@ public class PostConfiguraciones extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
 
-        EntityManagerFactory emf = (EntityManagerFactory) getServletContext ().getAttribute( "emf");
+        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
 
         String v_dificultad, v_nave, v_luna, id_configuracion, id_usuario;
         int dificultad, nave, luna;
@@ -89,11 +86,16 @@ public class PostConfiguraciones extends HttpServlet {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            //gestion de errores 
+            String mensaje="{\"error\":\"Ha sido imposible guardar los datos.\"}";
+            if (ex.getMessage().contains("already exists")){
+                mensaje="{\"error\":\"Esta configuración ya existe.\"}";
+            }       
             Logger.getLogger(PostConfiguraciones.class.getName()).log(Level.SEVERE, null, ex.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");
             PrintWriter pw = response.getWriter();
-            pw.println("{\"error\":\"Ha sido imposible guardar los datos\"}");
+            pw.println(mensaje);
         }
     }
 }
