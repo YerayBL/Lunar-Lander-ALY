@@ -60,13 +60,14 @@ body{
 }
 
 #zonaAterrizaje{
-    height: 10%;
+    height: 15%;
+    width: 60%;
     position:fixed;
     bottom:0px;
 }
 #luna {
     height:100%; 
-    width: 800px;
+    width: 100%;
 }
 
 #mundo{
