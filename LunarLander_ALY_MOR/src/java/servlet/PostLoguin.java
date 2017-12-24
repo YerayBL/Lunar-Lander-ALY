@@ -3,6 +3,7 @@
  */
 package servlet;
 
+import gson.ConfiguracionGson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -15,9 +16,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Configuracion;
 import model.Usuario;
 import gson.Configuraciones;
+import java.util.ArrayList;
+import model.Configuracion;
 import pck_utilidades.Utilidades;
 
 /**
@@ -92,16 +94,25 @@ public class PostLoguin extends HttpServlet {
         if (v_id_usuario != "") {
 
             try {
+                Configuraciones obj_configuraciones = new Configuraciones();
                 // segundo, si se ha validado devolvemos las configuraciones de ese usuario
                 //recupero los datos  una vez insertado los datos
                 Query query = entitymanager.createNamedQuery("Configuracion.findByIdUsuario");
                 query.setParameter("idUsuario", v_id_usuario);
                 List<Configuracion> list = query.getResultList();
-                //creo objeto cofiguraciones para introducir los datos de la bbdd
-                Configuraciones obj_configuraciones = new Configuraciones(list);
-                /*for (Configuracion confi : list) {
-                obj_configuraciones.getConfiguracion().add(confi);
-                }*/
+                List<ConfiguracionGson> listGson = new ArrayList<>();
+                for (Configuracion resultado : list) {
+                    if (resultado != null) {
+                        ConfiguracionGson v_configuracionGson = new ConfiguracionGson();
+                        v_configuracionGson.setIdUsuario(resultado.getIdUsuario());
+                        v_configuracionGson.setIdConfiguracion(resultado.getIdConfiguracion());
+                        v_configuracionGson.setDificultad(resultado.getDificultad());
+                        v_configuracionGson.setLuna(resultado.getLuna());
+                        v_configuracionGson.setNave(resultado.getNave());
+                        listGson.add(v_configuracionGson);
+                    }
+                }
+                obj_configuraciones.setConfiguracion(listGson);
 
                 // devolvemos el resultado
                 String jsonInString;

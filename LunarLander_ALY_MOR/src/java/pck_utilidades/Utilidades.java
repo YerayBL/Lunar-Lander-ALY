@@ -17,59 +17,35 @@ public class Utilidades {
 
     //Convertir objeto java a JSON String usando el método toJson ().
     //funcion que devuelve un String
-    public String objectToJson_String(Configuraciones obj_configuraciones) {
-        try {
-            Gson gson = new Gson();
-            //Si volem pasar-ho a string
-
-            String jsonInString = gson.toJson(obj_configuraciones); //a String
-            return jsonInString;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String objectToJson_String(Configuraciones obj_configuraciones){
+        Gson gson = new Gson();
+        //Si volem pasar-ho a string
+        String jsonInString = gson.toJson(obj_configuraciones); //a String
+        return jsonInString;
     }
 
     //para pasar los valores desde json de las puntuaciones de objeto a string
-    public String PuntuacionToJson_String(Puntuaciones obj_puntuaciones) {
-        try {
-            Gson gson = new Gson();
-            //Si volem pasar-ho a string
-
-            String jsonInString = gson.toJson(obj_puntuaciones); //a String
-            return jsonInString;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String PuntuacionToJson_String(Puntuaciones obj_puntuaciones){
+        Gson gson = new Gson();
+        //Si volem pasar-ho a string
+        String jsonInString = gson.toJson(obj_puntuaciones); //a String
+        return jsonInString;
     }
 
     //para pasar los valores desde json de los usuarios de objeto a string
     public String UsuarioToJson_String(Usuarios obj_usuarios) {
-        try {
-            Gson gson = new Gson();
-            //Si volem pasar-ho a string
-
-            String jsonInString = gson.toJson(obj_usuarios); //a String
-            return jsonInString;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        Gson gson = new Gson();
+        //Si volem pasar-ho a string
+        String jsonInString = gson.toJson(obj_usuarios); //a String
+        return jsonInString;
     }
 
     //para pasar los valores desde json de los usuarios con más partidas de objeto a string
-    public String JugadoresTopPartidasToJson_String(JugadoresTopPartidas obj_usuarios_partidas) {
-        try {
-            Gson gson = new Gson();
-            //Si volem pasar-ho a string
-
-            String jsonInString = gson.toJson(obj_usuarios_partidas); //a String
-            return jsonInString;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String JugadoresTopPartidasToJson_String(JugadoresTopPartidas obj_usuarios_partidas){
+        Gson gson = new Gson();
+        //Si volem pasar-ho a string
+        String jsonInString = gson.toJson(obj_usuarios_partidas); //a String
+        return jsonInString;
     }
 
 }

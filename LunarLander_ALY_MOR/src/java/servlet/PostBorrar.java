@@ -4,9 +4,11 @@
 package servlet;
 
 import controllers.ConfiguracionJpaController;
+import gson.ConfiguracionGson;
 import gson.Configuraciones;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -55,7 +57,19 @@ public class PostBorrar extends HttpServlet {
                 Query query = entitymanager.createNamedQuery("Configuracion.findByIdUsuario");
                 query.setParameter("idUsuario", v_id_usuario);
                 List<Configuracion> list = query.getResultList();
-                obj_configuraciones.setConfiguracion(list);
+                List<ConfiguracionGson> listGson = new ArrayList<>();
+                for (Configuracion resultado : list) {
+                    if (resultado != null) {
+                        ConfiguracionGson v_configuracionGson = new ConfiguracionGson();
+                        v_configuracionGson.setIdUsuario(resultado.getIdUsuario());
+                        v_configuracionGson.setIdConfiguracion(resultado.getIdConfiguracion());
+                        v_configuracionGson.setDificultad(resultado.getDificultad());
+                        v_configuracionGson.setLuna(resultado.getLuna());
+                        v_configuracionGson.setNave(resultado.getNave());
+                        listGson.add(v_configuracionGson);
+                    }
+                }
+                obj_configuraciones.setConfiguracion(listGson);
 
                 // devolvemos el resultado
                 String jsonInString;

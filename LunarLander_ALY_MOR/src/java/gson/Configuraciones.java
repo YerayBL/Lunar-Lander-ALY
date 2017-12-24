@@ -7,15 +7,11 @@ package gson;
 
 import java.io.Serializable;
 import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import model.Configuracion;
 
 public class Configuraciones implements Serializable {
 
-    @SerializedName("configuracion")
-    @Expose
-    private List<Configuracion> configuracion = null;
+   
+    private List<ConfiguracionGson> configuracion = null;
     private final static long serialVersionUID = 4418342885309929295L;
 
     /**
@@ -29,20 +25,20 @@ public class Configuraciones implements Serializable {
      *
      * @param configuracion
      */
-    public Configuraciones(List<Configuracion> configuracion) {
+    public Configuraciones(List<ConfiguracionGson> configuracion) {
         super();
         this.configuracion = configuracion;
     }
 
-    public List<Configuracion> getConfiguracion() {
+    public List<ConfiguracionGson> getConfiguracion() {
         return configuracion;
     }
 
-    public void setConfiguracion(List<Configuracion> configuracion) {
+    public void setConfiguracion(List<ConfiguracionGson> configuracion) {
         this.configuracion = configuracion;
     }
 
-    public Configuraciones withConfiguracion(List<Configuracion> configuracion) {
+    public Configuraciones withConfiguracion(List<ConfiguracionGson> configuracion) {
         this.configuracion = configuracion;
         return this;
     }

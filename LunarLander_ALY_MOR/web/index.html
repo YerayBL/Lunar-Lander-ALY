@@ -45,8 +45,6 @@ and open the template in the editor.
                         for (var i in jsn.puntuacion) {
                             v_id_puntuacion = jsn.puntuacion[i].idPuntuacion;
                         }
-                        alert("Puntuacion guardada con exito.");
-
                     },
                     error: function (e) {
                         if (e["responseJSON"] === undefined) {
@@ -71,8 +69,6 @@ and open the template in the editor.
                         for (var i in jsn.puntuacion) {
                             v_id_puntuacion = jsn.puntuacion[i].idPuntuacion;
                         }
-                        alert("Puntuacion guardada con exito.");
-
                     },
                     error: function (e) {
                         if (e["responseJSON"] === undefined) {
@@ -177,7 +173,6 @@ and open the template in the editor.
 
                                 $('#configuraciones').append("<option value=" + v_id + ">" + v_id + "</option>");
                             }
-                            alert("¡¡¡Ya estas en el juego " + v_id_usuario + "!!!...elige configuración.");
                             iniciarPuntuacion();/*Llamo al iniciar score para guardar puntuacion en bbdd*/
                             start();
                         },
@@ -231,7 +226,6 @@ and open the template in the editor.
                             data: {id_configuracion: $("#id").val(), id_usuario: v_id_usuario, dificultad: dificultad, luna: modeloLuna, nave: modeloNave},
                             success: function (p_json) {
                                 v_json = p_json;
-                                alert("La configuración se ha añadido con exito.");
                                 $('#configuraciones').append("<option value=" + p_id + ">" + p_id + "</option>");
                             },
                             error: function (e) {
@@ -277,7 +271,6 @@ and open the template in the editor.
                         data: {id_configuracion: $('#configuraciones').val(), id_usuario: v_id_usuario},
                         success: function (p_json) {
                             v_json = p_json;
-                            alert("Elemento eliminado.");
                             var valor = $('#configuraciones').val();
                             $("#configuraciones option[value=" + valor + "]").remove();
                         },
@@ -335,12 +328,11 @@ and open the template in the editor.
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div id="zonaAterrizaje"><img src="img/luna.png" alt="Luna Lunera cascabelera" id="luna"></div>
+                            <div id="zonaAterrizaje"><img src="img/luna.png" alt="Luna Lunera cascabelera" id="luna" class="img-responsive"></div>
                         </div>
                     </div>
                 </div>  
             </div>
-
         </div><!--FIN CONTAINER-FLUID-->
 
         <!--MODAL AJUSTES-->
@@ -392,183 +384,184 @@ and open the template in the editor.
             <br>
             <br>
             <p class="text-justify">El juego consiste en frenar la caída de la nave mediante 
-                el uso del motor, utiliza la tecla <b>espacio</b>, para que esta pueda aterrizar adecuadamente
-                sobre la superficie lunar.<br><br>Si el jugador no frena lo suficientemente,,
-                la caída de la nave a una <b>velocidad inferior a los 5 m/s</b>, esta se 
+                el uso del motor, utiliza la tecla <b>espacio</b> o el botón <b>ON</b>
+                para la version smartphone, para que esta pueda aterrizar adecuadamente
+                sobre la superficie lunar.<br><br>Si el jugador no frena lo suficientemente
+                la caída de la nave ,a una <b>velocidad inferior a los 5 m/s</b>, esta se 
                 estrellará y el jugador no superará el juego.<br><br> Además hay que tener
                 en cuenta que la nave cuenta con un medidor de gasolina que se acabará si 
-                el jugador abusa del uso del motor de la nave. Para comenzar el juego, vaya al 
-                botón ajustes, en el bptón configuración registre una configuracion, esta puede ser: Fácil,Media,Difícil. Tambien puede elegir 
-                el modelo de nave: Modelo Estandar ó Modelo PodRacer y cambiar el color de la Luna: Gris o Amarilla. Una vez
-                rellenado los campos, guarde su configuración y carguela a continuación....Ya puedes empezar a jugar!!. Ánimo!...que la fuerza 
-                te acompañe. 
-                En el botón listado usuarios online podrá ver los jugadores en linea. En el botón listado usuarios top,
-                podrá ver los jugadores con más partidas realizadas.  </p>
+                el jugador abusa del uso del motor de la nave.</p>
         </div>
 
         <!--CONFIGURACION--> 
         <div class="container">
             <div id="settings">
-                <a href="#" onclick="ocultarConfiguracion()"><img id="close" src="img/close.png" alt="close"></a>
-                <!--<div class="row">
-                     <div class="col-md-8 col-lg-8">-->
-                <h3>CONFIGURACIÓN</h3>    
-                <form>
-                    <div class="form-group input-group-lg">
-                        <label >Bienvenido :
-                            <input id="v_id_usuario" class="form-control" type="text">
-                        </label>
-                        <br>
-                        <label>Dificultad del juego:<br>
-                            (Disminuye el depósito de gasolina):
-                        </label>
-                        <select class="form-control"  id="dificultad">
-                            <option value="1" selected="selected">Fácil</option>
-                            <option value="2">Media</option>
-                            <option value="3">Difícil</option>
-                        </select>
-                        <label>Modelo Luna:</label>
-                        <select class="form-control input-sm" id="modeloLuna" >
-                            <option selected="selected" value="1">Amarilla</option>
-                            <option value="2">Gris</option>
-                        </select>
+                <div class="margen_left">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <a href="#" onclick="ocultarConfiguracion()"><img id="close" src="img/close.png" alt="close"></a>
+                        <h3>CONFIGURACIÓN</h3>    
+                        <form>
+                            <div class="form-group">
+                                <label >Bienvenido :</label>
+                                <input id="v_id_usuario" class="form-control" type="text">
+                                <br>
+                                <label>Dificultad del juego:<br>
+                                    (Disminuye el depósito de gasolina):
+                                </label>
+                                <div id="sel3">
+                                    <select class="form-control"  id="dificultad">
+                                        <option value="1" selected="selected" >Fácil</option>
+                                        <option value="2">Media</option>
+                                        <option value="3">Difícil</option>
+                                    </select>
+                                </div>
+                                <label>Modelo Luna:</label>
+                                <select class="form-control" id="modeloLuna" >
+                                    <option selected="selected" value="1">Amarilla</option>
+                                    <option value="2">Gris</option>
+                                </select>
 
-                        <label>Modelo Nave:</label>
-                        <select class="form-control"  id="modeloNave">
-                            <option selected="selected" value="1">Modelo Estándar</option>
-                            <option value="2">Modelo PodRacer</option>
-                        </select>
-
-                        <label>Nombre de la Configuracion:</label>
-                        <br>
-                        <input id="id" class="form-control" type="text">
-                        <br>
-                        <input id="guardar" class="btn-primary" type="button" value="Guardar Configuraciones">
-                        <br>
-                        <br>
-                        <select class="form-control"  id="configuraciones"></select>
-                        <br>
-                        <input class="btn-primary" id="cargar" type="button" value="Cargar Configuraciones">
-                        <input class="btn-primary" id="borrar" type="button" value="Borrar Configuración">
-                        <br>
-                    </div>  
-                </form>
+                                <label>Modelo Nave:</label>
+                                <select class="form-control"  id="modeloNave">
+                                    <option selected="selected" value="1">Modelo Estándar</option>
+                                    <option value="2">Modelo PodRacer</option>
+                                </select>
+                                <label>Nombre de la Configuracion:</label>
+                                <br>
+                                <input id="id" class="form-control" type="text">
+                                <br>
+                                <input id="guardar" class="btn-primary" type="button" value="Guardar Configuraciones">
+                                <br>
+                                <br>
+                                <select class="form-control"  id="configuraciones"></select>
+                                <br>
+                                <input class="btn-primary" id="cargar" type="button" value="Cargar Configuraciones">
+                                <input class="btn-primary" id="borrar" type="button" value="Borrar Configuración">
+                                <br>
+                            </div>  
+                        </form>
+                    </div>
+                </div>
             </div>
         </div><!--FIN CONFIGURACION-->
         <!--LISTA DE PARTIDAS-->
         <div class="container">
-            <div id="settingsLista"
-                 <a href="#" onclick="ocultarListado()"><img id="close" src="img/close.png" alt="close"></a>
-                <!-- <div class="row">
-                       <div class="col-md-8 col-lg-8">-->
-                <br>
-                <br>
-                <h3>USUARIOS 10 TOP PARTIDAS</h3> 
-                <ul id="usuariosTop" class="ul_list">
-                    <li></li>
+            <div id="settingsLista">
+                <div class="margen_left">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <a href="#" onclick="ocultarListado()"><img id="close" src="img/close.png" alt="close"></a>
 
-                </ul>
-            </div>
-        </div>
-    </div>
-</div><!--FIN LISTADO DE PARTIDAS-->
-<!--LISTA DE USUARIOS ON-LINE-->
-<div class="container">
-    <div id="settingsUsuarios">
-        <a href="#" onclick="ocultarListadoUsuarios()"><img id="close" src="img/close.png" alt="close"></a>
-        <!--<div class="row">
-              <div class="col-md-8 col-lg-8">-->
-        <br>
-        <br>
-        <h3>USUARIOS ONLINE</h3> 
-        <br>
+                        <br>
+                        <br>
+                        <h3>USUARIOS 10 TOP PARTIDAS</h3> 
+                        <ul id="usuariosTop" class="ul_list">
+                            <li></li>
 
-        <ul id="usuariosOnline" class="ul_list">
-            <li></li>
-        </ul>
-
-    </div>
-</div><!--FIN LISTADO DE USURIOS ON-LINE-->
-<!--LOGIN MODAL-->
-<!-- line modal -->
-<div class="modal fade" id="myLogin" tabindex="-1" role="dialog" aria-labelledby="modalLabel" 
-     aria-hidden="true" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>-->
-                <h3 class="modal-title" id="lineModalLabel">¡¡Si quieres ver las estrellas...registrate!!</h3>
-            </div>
-            <div class="modal-body">
-                <!-- content goes here -->
-                <form>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Nombre de Usuario :</label>
-                        <input type="text" class="form-control" id="id_usuario" placeholder="Introduzca usuario" name="id_usuario" required autofocus >
-                    </div> 
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control"  id="password" placeholder="Introduzca password" name="password" required >
+                        </ul>
                     </div>
-                    <div class="form-group">    
-                        <button class="btn btn-lg btn-primary btn-block" name="login" id="login" type="button" class="close" data-dismiss="modal">Login</button>
+                </div>
+            </div>
+        </div><!--FIN LISTADO DE PARTIDAS-->
+        <!--LISTA DE USUARIOS ON-LINE-->
+        <div class="container">
+            <div id="settingsUsuarios">
+                <div class="margen_left">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <a href="#" onclick="ocultarListadoUsuarios()"><img id="close" src="img/close.png" alt="close"></a>
+
+                        <br>
+                        <br>
+                        <h3>USUARIOS ONLINE</h3> 
+                        <br>
+
+                        <ul id="usuariosOnline" class="ul_list">
+                            <li></li>
+                        </ul>
+
                     </div>
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <a data-toggle="modal" href="#myModalRegistro" class="text-center new-account">Registrarse</a>
-            </div>
-        </div>
-    </div>
-</div><!--CIERRE DEL CONTAINER MODAL LOGIN-->
-<!--MODAL REGITRO-->
-<div class="container">
-    <!-- Modal -->
-    <div class="modal fade" id="myModalRegistro" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Formulario de Registro</h4>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <fieldset>
-                            <div class="form-group">
-                                <label for="id_usuario"> Id Usuario<span>*</span></label>
-                                <input type="text" class="form-control" id="id_usuario_reg" name="id_usuario" required autofocus>
-                            </div>
-                            <div class="form-group">
-                                <label for="nombre"> Nombre<span>*</span></label>
-                                <input type="text" class="form-control" id="nombre_reg" name="nombre" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="apellido">Apellido<span>*</span></label>
-                                <input type="text" class="form-control" id="apellido_reg" name="apellido" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password<span>*</span></label>
-                                <input type="password" class="form-control" id="password_reg" name="password" required>
-                            </div>
-                            <input type="button" class="btn btn-danger" class="close" data-dismiss="modal" id="enviarUser" name="enviarUser" value="Enviar"  />
-                            <input type="button"  class=" btn btn-default" value="Restablecer" />
-                        </fieldset>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <p class="text-right"> <span>*</span> Campos Obligatorios</p>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
-                </div>
-            </div>
 
-        </div>
-    </div>
-</div><!--CIERRE CONTAINER MODAL REGISTRO-->
-<script src="js/jquery-2.2.3.min.js" type="text/javascript"></script>
-<script src="js/bootstrap.min.js" type="text/javascript"></script>
-<script src="js/bootstrapValidator.min.js" type="text/javascript"></script>
-</body>
+            </div><!--FIN LISTADO DE USURIOS ON-LINE-->
+            <!--LOGIN MODAL-->
+            <!-- line modal -->
+            <div class="modal fade" id="myLogin" tabindex="-1" role="dialog" aria-labelledby="modalLabel" 
+                 aria-hidden="true" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>-->
+                            <h3 class="modal-title" id="lineModalLabel">¡¡Si quieres ver las estrellas...registrate!!</h3>
+                        </div>
+                        <div class="modal-body">
+                            <!-- content goes here -->
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Nombre de Usuario :</label>
+                                    <input type="text" class="form-control" id="id_usuario" placeholder="Introduzca usuario" name="id_usuario" required autofocus >
+                                </div> 
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control"  id="password" placeholder="Introduzca password" name="password" required >
+                                </div>
+                                <div class="form-group">    
+                                    <button class="btn btn-lg btn-primary btn-block" name="login" id="login" type="button" class="close" data-dismiss="modal">Login</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a data-toggle="modal" href="#myModalRegistro" class="text-center new-account">Registrarse</a>
+                        </div>
+                    </div>
+                </div>
+            </div><!--CIERRE DEL CONTAINER MODAL LOGIN-->
+            <!--MODAL REGITRO-->
+            <div class="container">
+                <!-- Modal -->
+                <div class="modal fade" id="myModalRegistro" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Formulario de Registro</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="id_usuario"> Id Usuario<span>*</span></label>
+                                            <input type="text" class="form-control" id="id_usuario_reg" name="id_usuario" required autofocus>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nombre"> Nombre<span>*</span></label>
+                                            <input type="text" class="form-control" id="nombre_reg" name="nombre" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="apellido">Apellido<span>*</span></label>
+                                            <input type="text" class="form-control" id="apellido_reg" name="apellido" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password<span>*</span></label>
+                                            <input type="password" class="form-control" id="password_reg" name="password" required>
+                                        </div>
+                                        <input type="button" class="btn btn-danger" class="close" data-dismiss="modal" id="enviarUser" name="enviarUser" value="Enviar"  />
+                                        <input type="button"  class=" btn btn-default" value="Restablecer" />
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <p class="text-right"> <span>*</span> Campos Obligatorios</p>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div><!--CIERRE CONTAINER MODAL REGISTRO-->
+            <script src="js/jquery-2.2.3.min.js" type="text/javascript"></script>
+            <script src="js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="js/bootstrapValidator.min.js" type="text/javascript"></script>
+    </body>
 </html>

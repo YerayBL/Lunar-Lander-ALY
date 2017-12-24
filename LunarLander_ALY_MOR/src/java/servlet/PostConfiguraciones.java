@@ -4,9 +4,11 @@
 package servlet;
 
 import controllers.ConfiguracionJpaController;
+import gson.ConfiguracionGson;
 import gson.Configuraciones;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,12 +72,21 @@ public class PostConfiguraciones extends HttpServlet {
                 EntityManager entitymanager = emf.createEntityManager();
                 Query query = entitymanager.createNamedQuery("Configuracion.findByIdUsuario");
                 query.setParameter("idUsuario", id_usuario);
-                List<Configuracion> list = query.getResultList();
-                obj_configuraciones.setConfiguracion(list);
-                /*for (Configuracion confi : list) {
-                    obj_configuraciones.getConfiguracion().add(confi);
-                }*/
 
+                List<Configuracion> list = query.getResultList();
+                List<ConfiguracionGson> listGson = new ArrayList<>();
+                for (Configuracion resultado : list) {
+                    if (resultado != null) {
+                        ConfiguracionGson v_configuracionGson = new ConfiguracionGson();
+                        v_configuracionGson.setIdConfiguracion(resultado.getIdConfiguracion());
+                        v_configuracionGson.setIdUsuario(resultado.getIdUsuario());
+                        v_configuracionGson.setDificultad(resultado.getDificultad());
+                        v_configuracionGson.setLuna(resultado.getLuna());
+                        v_configuracionGson.setNave(resultado.getNave());
+                        listGson.add(v_configuracionGson);
+                    }
+                }
+                obj_configuraciones.setConfiguracion(listGson);
                 // devolvemos el resultado
                 String jsonInString;
                 Utilidades operaciones = new Utilidades();

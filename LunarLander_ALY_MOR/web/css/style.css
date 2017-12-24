@@ -3,7 +3,7 @@
     margin:0em;
 }
 body{
-    background-image: url("../img/fondo.png");
+    background-image: url("../img/fondo_body.jpg");
     color:black;   
 }
 
@@ -12,16 +12,16 @@ body{
     height: 100%;
     position: fixed;
     left: 0px;
-    background-image: url("../img/mundo.png");
+    background-image: url("../img/mundi.png");
     background-size: 80%;
     background-repeat: no-repeat;
     background-position: left bottom;;
 }
 #derecha{
-    background-image: url("../img/sol.png");
+    background-image: url("../img/rojo.png");
     background-repeat: no-repeat;
     background-position: right; 
-    background-size: 30%;
+    background-size: 50%;
     display:block !important;
     pointer-events: auto;
     width:35%; height:100%;
@@ -61,7 +61,7 @@ body{
 
 #zonaAterrizaje{
     height: 15%;
-    width: 60%;
+    width:60%;
     position:fixed;
     bottom:0px;
 }
@@ -267,8 +267,8 @@ body{
     text-align: center;
     border-style: outset;
     position: absolute;
-    width: 80%;
-    left: 10%;
+    width: 50%;
+    left: 25%;
     top: 7%;
     text-align: center;
     color:white;
@@ -281,8 +281,8 @@ body{
     text-align: center;
     border-style: outset;
     position: absolute;
-    width: 80%;
-    left: 10%;
+    width: 50%;
+    left: 25%;
     top: 7%;
     text-align: center;
     color:white;
@@ -295,23 +295,12 @@ body{
     text-align: center;
     border-style: outset;
     position: absolute;
-    width: 80%;
-    left: 10%;
+    width: 50%;
+    left: 25%;
     top: 7%;
     text-align: center;
     color:white;
-}
-#dificultad {
-    padding: 10px;
-    font-size: 120%;
-}
-#modeloLuna {
-    padding: 10px;
-    font-size: 120%;
-}
-#modeloNave {
-    padding: 10px;
-    font-size: 120%;
+    font-size: 1em;
 }
 
 #gameOver{

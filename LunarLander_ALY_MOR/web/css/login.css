@@ -35,9 +35,9 @@ Login Modal
   .modal-footer {
       background-color: #f9f9f9;
   }
- /*.row{
-      margin-left: 200px;
-}*/
+ .margen_left{
+      margin-left: 0%;
+}
 
 /*MODAL AJUSTES*/
 .color-ajustes{
