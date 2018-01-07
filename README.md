@@ -2,9 +2,9 @@
 Basado en el repositorio:
 https://github.com/urbinapro/lunar-landing-javascript
 
-Back End: Laura
+Back End: Laura Díaz Portela
 
-Front End: Angelica
+Front End: Angelica Maria Castilla Matallana
 
 Control de versiones: Yeray Blanco López
 
