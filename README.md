@@ -20,7 +20,7 @@ Proyecto que trata de conectar un pequeño juego en Front End con Html, Css y Ja
   <li>Se utilizan cookies para recordar incios de sesión</li>
   <li>Se mostrarán tablas de estadisticas e información sobre las partidas jugadas asociadas a cada jugador.</li>
   <li>La aplicación se desplegará enm un servidor PASS.</li>
-
+</ul>
 ## CHANGELOG
 <ul>
 <li>Versión 0: Creado el Fork del repositorio https://github.com/urbinapro/lunar-landing-javascript</li>
@@ -31,3 +31,4 @@ Proyecto que trata de conectar un pequeño juego en Front End con Html, Css y Ja
 <li>Versión 5: Añadida tabla con información sobre las partidas y jugadores.</li>
 <li>Versión 6: Editada la estetica del juego y el registro con imagenes y mejoras en el Css.</li>
 <li>Versión 7: Arreglos menores de errores y bugs.</li>
+</ul>
