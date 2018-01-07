@@ -60,7 +60,7 @@ body{
 }
 
 #zonaAterrizaje{
-    height: 15%;
+    height: 16%;
     width:60%;
     position:fixed;
     bottom:0px;
@@ -93,28 +93,29 @@ body{
 /*CONTROLES*/
 
 #reanudar:active {border-style: inset;}
-#reanudar:hover {background-color: #2E8B57; font-size: 100%;}
+#reanudar:hover {background-color: #FF4500; font-size: 100%; font-weight: bold}
 #pausa:active {border-style: inset;}
-#pausa:hover {background-color: #2E8B57; font-size: 100%;}
+#pausa:hover {background-color: #FF4500; font-size: 100%;font-weight: bold}
 #reinicia:active {border-style: inset;}
-#reinicia:hover {background-color: #2E8B57; font-size: 100%;}
+#reinicia:hover {background-color: #FF4500; font-size: 100%;font-weight: bold}
 #instrucciones:active {border-style: inset;}
-#instrucciones:hover {background-color: #2E8B57; font-size: 100%;}
+#instrucciones:hover {background-color: #FF4500; font-size: 100%;font-weight: bold}
 #botonAjustes:active {border-style: inset;}
-#botonAjustes:hover {background-color: #2E8B57; font-size: 100%;}
+#botonAjustes:hover {background-color: #FF4500; font-size: 100%;font-weight: bold}
 #listaPartidas:active {border-style: inset;}
-#listaPartidas:hover {background-color: #2E8B57; font-size: 100%;}
+#listaPartidas:hover {background-color: #FF4500; font-size: 100%;font-weight: bold}
 #usuarioLine:active {border-style: inset;}
-#usuarioLine:hover {background-color: #2E8B57; font-size: 100%;}
+#usuarioLine:hover {background-color: #FF4500; font-size: 100%;font-weight: bold}
 #close:active {border-style: inset;}
-#close:hover {background-color: #2E8B57;}
+#close:hover {background-color:#FF4500;}
 
 #reanudar {
     border-style: outset;
-    border-color: #2E8B57;
+    border-color: #adbfd4;
+    border-radius: 25px;
     display: none;
     float: right;
-    background-color: #00FA9A;
+    background-color:  rgba(197, 80, 181, 0.21);
     margin: 10px;
     margin-top: 5%;
     color: black;
@@ -127,6 +128,7 @@ body{
     background-size: 60%;
     background-position: 50% 50%;
     pointer-events: auto;
+
 }
 #reanudar p {
     margin-top: 0px;
@@ -134,10 +136,11 @@ body{
 
 #pausa {
     border-style: outset;
-    border-color: #2E8B57;
+    border-color: #adbfd4;
+    border-radius: 25px;
     display: inline-block;
     float: right;
-    background-color: #00FA9A;
+    background-color:  rgba(197, 80, 181, 0.21);
     margin: 10px;
     margin-top: 5%;
     color: black;
@@ -152,7 +155,8 @@ body{
 }
 #reinicia {
     border-style: outset;
-    border-color: #2E8B57;
+    border-color: #adbfd4;
+    border-radius: 25px;
     display: inline-block;
     width: 70px; height: 70px;
     float: right;
@@ -160,23 +164,24 @@ body{
     color: black;
     text-align: center;
     vertical-align: text-top;
-    background-color: #00FA9A;
+    background-color:  rgba(197, 80, 181, 0.21);
     margin: 10px;
     margin-top: 5%;
     background-image: url("../img/reinicia.png");
     background-repeat: no-repeat;
-    background-size: 50%;
-    background-position: 50% 50%;
+    background-size: 55%;
+    background-position: 50% 60%;
 }
 #reinicia p {
     margin-top: 0px;
 }
 #instrucciones {
     border-style: outset;
-    border-color: #2E8B57;
+    border-color: #adbfd4;
+    border-radius: 25px;
     display: inline-block;
     float: right;
-    background-color: #00FA9A;
+    background-color:  rgba(197, 80, 181, 0.21);
     margin: 10px;
     margin-top: 5%;
     width: 70px;
@@ -186,8 +191,8 @@ body{
     font-size: 0%;
     background-image: url("../img/ayuda.png");
     background-repeat: no-repeat;
-    background-size: 60%;
-    background-position: 50% 50%;
+    background-size: 50%;
+    background-position: 50% 60%;
 }
 #instrucciones p {
     margin-top: 0px;
@@ -196,10 +201,10 @@ body{
 
 #botonAjustes {
     border-style: outset;
-    border-color: #2E8B57;
+    border-color: #adbfd4;
     display: inline-block;
     float: right;
-    background-color: #00FA9A;
+    background-color:  rgba(197, 80, 181, 0.21);
     margin: 10px;
     margin-top: 5%;
     width: 70px;
@@ -209,8 +214,9 @@ body{
     font-size: 0%;
     background-image: url("../img/settings.png");
     background-repeat: no-repeat;
-    background-size: 60%;
-    background-position: 50% 50%;
+    background-size: 55%;
+    background-position: 50% 60%;
+    border-radius: 25px;
 }
 #botonAjustes p {
     margin-top: 0px;
@@ -295,8 +301,8 @@ body{
     text-align: center;
     border-style: outset;
     position: absolute;
-    width: 50%;
-    left: 25%;
+    width: 70%;
+    left: 16%;
     top: 7%;
     text-align: center;
     color:white;

@@ -397,14 +397,15 @@ and open the template in the editor.
         <div class="container">
             <div id="settings">
                 <div class="margen_left">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class=" col-lg-12">
                         <a href="#" onclick="ocultarConfiguracion()"><img id="close" src="img/close.png" alt="close"></a>
+                        <br>
                         <h3>CONFIGURACIÓN</h3>    
                         <form>
                             <div class="form-group">
                                 <label >Bienvenido :</label>
                                 <input id="v_id_usuario" class="form-control" type="text">
-                                <br>
+
                                 <label>Dificultad del juego:<br>
                                     (Disminuye el depósito de gasolina):
                                 </label>
@@ -427,17 +428,16 @@ and open the template in the editor.
                                     <option value="2">Modelo PodRacer</option>
                                 </select>
                                 <label>Nombre de la Configuracion:</label>
-                                <br>
                                 <input id="id" class="form-control" type="text">
                                 <br>
-                                <input id="guardar" class="btn-primary" type="button" value="Guardar Configuraciones">
+                                <input id="guardar" class="btn-primary" type="button" value="Guardar Configuraciones"/>
+                                <div id="sel3">
+                                    <br>
+                                    <select class="form-control"  id="configuraciones"></select>
+                                </div>
                                 <br>
-                                <br>
-                                <select class="form-control"  id="configuraciones"></select>
-                                <br>
-                                <input class="btn-primary" id="cargar" type="button" value="Cargar Configuraciones">
-                                <input class="btn-primary" id="borrar" type="button" value="Borrar Configuración">
-                                <br>
+                                <input class="btn-primary" id="cargar" type="button" value="Cargar Configuraciones"/>
+                                <input class="btn-primary" id="borrar" type="button" value="Borrar Configuración"/>
                             </div>  
                         </form>
                     </div>

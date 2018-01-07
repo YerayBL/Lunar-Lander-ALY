@@ -189,7 +189,7 @@ function finalizarJuego() {
                 break;
             case 2:
                 eventosOff();
-                document.getElementById("imgNave").src ="img/nave_chunga_rota.gif";
+                document.getElementById("imgNave").src ="img/nave2modo_rota.gif";
                 document.getElementById("gameOver").style.display = "block";
                 document.getElementById("intentos").innerHTML = intentos;
                 break;
@@ -322,7 +322,7 @@ function reiniciarJuego() {
     if (modeloNave == 1) {
         document.getElementById("imgNave").src = "img/nave.png";
     } else {
-        document.getElementById("imgNave").src = "img/nave_chunga.png";
+        document.getElementById("imgNave").src = "img/nave2modo.png";
     }
 }
 
@@ -376,7 +376,7 @@ function recarga_nave() {
             restart();
             break;
         case 2:
-            document.getElementById("imgNave").src = "img/nave_chunga.png";
+            document.getElementById("imgNave").src = "img/nave2modo.png";
             document.getElementById("imgMotor").src = "img/mod2motor.gif";
             $('#modeloNave').val("2");
             //document.getElementById("modeloNave").innerHTML = "Modelo PodRacer";
