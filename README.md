@@ -11,7 +11,7 @@ Control de versiones: Yeray Blanco López
 ## RESUMEN DEL PROYECTO
 Proyecto que trata de conectar un pequeño juego en Front End con Html, Css y Javascript a una base de datos a través de Java y Sql en Back End.
 
-## MEJORAS SOBRE EL REPOSITORIO  BASE
+## MEJORAS SOBRE EL REPOSITORIO BASE
 <ul>
   <li>Html, css y javascript ha sido editado.</li>
   <li>El juego utiliza, guarda y carga configuraciones personalizadas a través de una base de datos en PostgreSql.</li>
@@ -21,7 +21,9 @@ Proyecto que trata de conectar un pequeño juego en Front End con Html, Css y Ja
   <li>Se mostrarán tablas de estadisticas e información sobre las partidas jugadas asociadas a cada jugador.</li>
   <li>La aplicación se desplegará enm un servidor PASS.</li>
 </ul>
+
 ## CHANGELOG
+
 <ul>
 <li>Versión 0: Creado el Fork del repositorio https://github.com/urbinapro/lunar-landing-javascript</li>
 <li>Versión 1: Creadas Entidades JPA y controladores asociados.</li>
