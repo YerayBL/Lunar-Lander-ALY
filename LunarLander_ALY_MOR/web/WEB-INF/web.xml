@@ -8,9 +8,17 @@
         <servlet-name>PostFinPartida</servlet-name>
         <servlet-class>servlet.PostFinPartida</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetUsuariosOnLine</servlet-name>
+        <servlet-class>servlet.GetUsuariosOnLine</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PostFinPartida</servlet-name>
         <url-pattern>/PostFinPartida</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetUsuariosOnLine</servlet-name>
+        <url-pattern>/GetUsuariosOnLine</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

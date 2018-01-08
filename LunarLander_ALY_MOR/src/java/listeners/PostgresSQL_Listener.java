@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Context Listener:
+ * registrar un ServletContextListener para realizar operaciones de inicialización 
+ * y limpieza
  */
 package listeners;
 
@@ -19,13 +19,13 @@ public class PostgresSQL_Listener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-       EntityManagerFactory emf = Persistence.createEntityManagerFactory("LunarLander_ALY_MORPU");
-       sce.getServletContext().setAttribute("emf", emf);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("LunarLander_ALY_MORPU");
+        sce.getServletContext().setAttribute("emf", emf);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        EntityManagerFactory emf = (EntityManagerFactory)sce.getServletContext().getAttribute("emf");
+        EntityManagerFactory emf = (EntityManagerFactory) sce.getServletContext().getAttribute("emf");
         emf.close();
     }
 }

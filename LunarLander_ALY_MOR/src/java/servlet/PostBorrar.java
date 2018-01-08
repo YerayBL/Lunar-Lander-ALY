@@ -1,18 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Borrar configuraciones
  */
 package servlet;
 
 import controllers.ConfiguracionJpaController;
+import gson.ConfiguracionGson;
 import gson.Configuraciones;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +31,7 @@ public class PostBorrar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("LunarLander_ALY_MORPU");
+        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
 
         String v_id_configuracion = request.getParameter("id_configuracion");
         String v_id_usuario = request.getParameter("id_usuario");
@@ -58,7 +57,19 @@ public class PostBorrar extends HttpServlet {
                 Query query = entitymanager.createNamedQuery("Configuracion.findByIdUsuario");
                 query.setParameter("idUsuario", v_id_usuario);
                 List<Configuracion> list = query.getResultList();
-                obj_configuraciones.setConfiguracion(list);
+                List<ConfiguracionGson> listGson = new ArrayList<>();
+                for (Configuracion resultado : list) {
+                    if (resultado != null) {
+                        ConfiguracionGson v_configuracionGson = new ConfiguracionGson();
+                        v_configuracionGson.setIdUsuario(resultado.getIdUsuario());
+                        v_configuracionGson.setIdConfiguracion(resultado.getIdConfiguracion());
+                        v_configuracionGson.setDificultad(resultado.getDificultad());
+                        v_configuracionGson.setLuna(resultado.getLuna());
+                        v_configuracionGson.setNave(resultado.getNave());
+                        listGson.add(v_configuracionGson);
+                    }
+                }
+                obj_configuraciones.setConfiguracion(listGson);
 
                 // devolvemos el resultado
                 String jsonInString;

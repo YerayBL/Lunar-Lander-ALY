@@ -56,35 +56,14 @@ window.onload = function arrancarJuego() {
         mostrarUsuarios();
     };
     
-    //CAPTURANDO EVENTOS PARA EL PANEL DERECHO EN SMARTPHONE
-    document.getElementById("reanudaSmartphone").onclick = function () {
-        reanudarSmartphone();
-    };
-    document.getElementById("pausaSmartphone").onclick = function () {
-        pausarSmartphone();
-    };
-    document.getElementById("reiniciaSmartphone").onclick = function () {
-        reiniciarJuegoSmartphone();
-    };
-    document.getElementById("ayudaSmartphone").onclick = function () {
-        mostrarInstruccionesSmartphone();
-    };
-    document.getElementById("botonAjustesSmartphone").onclick = function () {
-        mostrarAjustesSmartphone();
-    };
     //EVENTOS DE FIN DEL JUEGO
     document.getElementById("jugarOtraVez").onclick = function () {
         reiniciarJuego();
     };
-    document.getElementById("jugarOtraVezSmartphone").onclick = function () {
-        reiniciarJuegoSmartphone();
-    };
     document.getElementById("jugarAgain").onclick = function () {
         reiniciarJuego();
     };
-    document.getElementById("jugarAgainSmartphone").onclick = function () {
-        reiniciarJuegoSmartphone();
-    };
+   
     //CAMBIAR LA DIFICULTAD DEL JUEGO
     document.getElementById("dificultad").onchange= function cambiarDificultad(){
         var valor=$('#dificultad').val();
@@ -138,17 +117,6 @@ window.onload = function arrancarJuego() {
 
     }
 
-    //ASIGNAR EVENTOS TOUCH SCREEN PARA LA VERSION SMARTPHONE
-    var botonOnSmartphone = document.getElementById("botonOn");
-    botonOnSmartphone.addEventListener("touchstart", handlerFunction, false);
-    botonOnSmartphone.addEventListener("touchend", endingFunction, false);
-    function handlerFunction(event) {
-        encenderMotor();
-    }
-    function endingFunction(event) {
-        apagarMotor();
-    }
-
     //CON TECLADO (tecla ESPACIO)
     window.onkeydown = function (e) {
         var claveTecla;
@@ -163,15 +131,15 @@ window.onload = function arrancarJuego() {
     }
     window.onkeyup = apagarMotor;
 
-}//TERMINA EL WINDOW.ONLOAD
+};//TERMINA EL WINDOW.ONLOAD
 
 
 //FUNCION EMPEZAR EL JUEGO
-function start() {
+function start() {    
     timer = setInterval(function () {
         moverNave();
     }, dt * 1000);
-}
+};
 
 //FUNCION PARAR NAVE Y CONTROLADORES
 function stop() {
@@ -215,13 +183,13 @@ function finalizarJuego() {
         switch (modeloNave) {
             case 1:
                 eventosOff();
-                document.getElementById("imgNave").src = "img/nave_rota.gif";
+                document.getElementById("imgNave").src ="img/nave_verd_rota.gif";
                 document.getElementById("gameOver").style.display = "block";
                 document.getElementById("intentos").innerHTML = intentos;
                 break;
             case 2:
                 eventosOff();
-                document.getElementById("imgNave").src = "img/mod2rota.gif";
+                document.getElementById("imgNave").src ="img/nave2modo_rota.gif";
                 document.getElementById("gameOver").style.display = "block";
                 document.getElementById("intentos").innerHTML = intentos;
                 break;
@@ -331,6 +299,7 @@ function restart() {
 }
 //OJO COMPORTAMIENTO ESCRITORIO
 function reiniciarJuego() {
+    iniciarPuntuacion();
     stop();
     document.getElementById("reanudar").style.display = "none";
     document.getElementById("pausa").style.display = "inline-block";
@@ -353,7 +322,7 @@ function reiniciarJuego() {
     if (modeloNave == 1) {
         document.getElementById("imgNave").src = "img/nave.png";
     } else {
-        document.getElementById("imgNave").src = "img/mod2nave.gif";
+        document.getElementById("imgNave").src = "img/nave2modo.png";
     }
 }
 
@@ -368,72 +337,6 @@ function pausar() {
     document.getElementById("pausa").style.display = "none";
     document.getElementById("reanudar").style.display = "inline-block";
 }
-
-//OJO COMPORTAMIENTO SMARTPHONE
-function reanudarSmartphone() {
-    start();
-    document.getElementById("reanudaSmartphone").style.display = "none";
-    document.getElementById("pausaSmartphone").style.display = "inline-block";
-    document.getElementById("reiniciaSmartphone").style.display = "none";
-    document.getElementById("ayudaSmartphone").style.display = "none";
-    document.getElementById("botonAjustesSmartphone").style.display = "none";
-    document.getElementById('izquierda').style.display = "inline-block";
-    document.getElementById('nave').style.display = "inline-block";
-    document.getElementById('zonaAterrizaje').style.display = "inline-block";
-    document.getElementById('derechaSmartphone').style.backgroundImage = 'url(img/sol.png)';
-    document.getElementById('derechaSmartphone').style.backgroundSize = '60%';
-    document.getElementById('derechaSmartphone').style.backgroundRepeat = 'no-repeat';
-    document.getElementById('derechaSmartphone').style.width = '35%';
-}
-
-function pausarSmartphone() {
-    stop();
-    document.getElementById("pausaSmartphone").style.display = "none";
-    document.getElementById("reanudaSmartphone").style.display = "inline-block";
-    document.getElementById("reiniciaSmartphone").style.display = "inline-block";
-    document.getElementById("ayudaSmartphone").style.display = "inline-block";
-    document.getElementById("botonAjustesSmartphone").style.display = "inline-block";
-    document.getElementById('derechaSmartphone').style.backgroundImage = 'url(img/fondo_menu.jpg)';
-    document.getElementById('derechaSmartphone').style.backgroundSize = 'auto';
-    document.getElementById('derechaSmartphone').style.backgroundRepeat = 'repeat';
-    document.getElementById('derechaSmartphone').style.width = '100%';
-}
-
-function reiniciarJuegoSmartphone() {
-    stop();
-    intentos++;
-    y = 5; // altura inicial y0=10%, debe leerse al iniciar si queremos que tenga alturas diferentes dependiendo del dispositivo
-    v = 0;
-    g = 1.622;
-    a = g;
-    dt = 0.016683;
-    gasolina = gasolinaTotal;
-    document.getElementById("fuel").innerHTML = porcentajeGasolina();
-    document.getElementById("fuel").style.color = "black";
-    reanudarSmartphone();
-    clearInterval(timer);
-    start();
-    eventosOn();
-    document.getElementById("intentos").innerHTML = intentos;
-    document.getElementById("gameOver").style.display = "none";
-    document.getElementById("userWin").style.display = "none";
-    if (modeloNave == 1) {
-        document.getElementById("imgNave").src = "img/nave.png";
-    } else {
-        document.getElementById("imgNave").src = "img/mod2nave.gif";
-    }
-}
-
-function mostrarAjustesSmartphone() {
-    pausarSmartphone();
-    document.getElementById("settings").style.display = "block";
-}
-
-function mostrarInstruccionesSmartphone() {
-    pausarSmartphone();
-    document.getElementById("menuInstrucciones").style.display = "block";
-}
-
 
 //funciones para cambiar los datos de la nave
 function recarga_dificultad() {
@@ -473,7 +376,7 @@ function recarga_nave() {
             restart();
             break;
         case 2:
-            document.getElementById("imgNave").src = "img/mod2nave.gif";
+            document.getElementById("imgNave").src = "img/nave2modo.png";
             document.getElementById("imgMotor").src = "img/mod2motor.gif";
             $('#modeloNave').val("2");
             //document.getElementById("modeloNave").innerHTML = "Modelo PodRacer";
